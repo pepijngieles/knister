@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset=UTF-8>
+	<meta name=viewport content="width=device-width,initial-scale=1.0,user-scalable=no">
+	<title>Knister</title>
+	<meta name=description content="...">
+	<meta name="author" content="Pepijn Gieles">
+	<link rel=manifest href=/assets/favicons/manifest.json>
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	<script defer src="js/script.js"></script>
+</head>
+<body>
+
+	<div class="canvas columns" data-canvas>
+
+		<input type=text name=column-1 readonly tabindex=-1>
+		<input type=text name=column-2 readonly tabindex=-1>
+		<input type=text name=column-3 readonly tabindex=-1>
+		<input type=text name=column-4 readonly tabindex=-1>
+		<input type=text name=column-5 readonly tabindex=-1>
+
+		<input type=text name=diagonal-ttb placeholder=x2 readonly tabindex=-1>
+
+		<button data-row=1 data-column=1 value=0> </button>
+		<button data-row=1 data-column=2 value=0> </button>
+		<button data-row=1 data-column=3 value=0> </button>
+		<button data-row=1 data-column=4 value=0> </button>
+		<button data-row=1 data-column=5 value=0> </button>
+
+		<input type=text name=row-1 readonly tabindex=-1>
+
+		<button data-row=2 data-column=1 value=0> </button>
+		<button data-row=2 data-column=2 value=0> </button>
+		<button data-row=2 data-column=3 value=0> </button>
+		<button data-row=2 data-column=4 value=0> </button>
+		<button data-row=2 data-column=5 value=0> </button>
+
+		<input type=text name=row-2 readonly tabindex=-1>
+
+		<button data-row=3 data-column=1 value=0> </button>
+		<button data-row=3 data-column=2 value=0> </button>
+		<button data-row=3 data-column=3 value=0> </button>
+		<button data-row=3 data-column=4 value=0> </button>
+		<button data-row=3 data-column=5 value=0> </button>
+
+		<input type=text name=row-3 readonly tabindex=-1>
+
+		<button data-row=4 data-column=1 value=0> </button>
+		<button data-row=4 data-column=2 value=0> </button>
+		<button data-row=4 data-column=3 value=0> </button>
+		<button data-row=4 data-column=4 value=0> </button>
+		<button data-row=4 data-column=5 value=0> </button>
+
+		<input type=text name=row-4 readonly tabindex=-1>
+
+		<button data-row=5 data-column=1 value=0> </button>
+		<button data-row=5 data-column=2 value=0> </button>
+		<button data-row=5 data-column=3 value=0> </button>
+		<button data-row=5 data-column=4 value=0> </button>
+		<button data-row=5 data-column=5 value=0> </button>
+
+		<input type=text name=row-5 readonly tabindex=-1>
+
+		<div class=dice>
+			<span class=die data-value=1></span>
+			<span class=die data-value=1></span>
+		</div>
+
+		<input type=text name=diagonal-btt placeholder=x2 readonly tabindex=-1>
+		<input type=text name=score-sum placeholder=Sum readonly tabindex=-1>
+
+	</div>
+
+</body>
+</html>

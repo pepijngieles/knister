@@ -1,0 +1,191 @@
+/* 1. General
+----------------------------------------------------------------------------- */
+*{
+	margin: 0;
+	padding: 0;
+}
+
+html{
+	font: 18px / 1.5 "Avenir", sans-serif;
+	color: #5a6664;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body{
+	display: grid;
+	align-content: center;
+	min-height: 90vh;
+	padding-top: 24px;
+	background-color: #f9f9f9;
+}
+
+
+/* 2. Grid Layout
+----------------------------------------------------------------------------- */
+.columns{
+	display: grid;
+	grid-template-columns: repeat(6, 52px); /* 52px: 48px width + 4px margin*/
+	grid-template-rows: repeat(6, 52px);
+	max-width: 300px;
+	margin: 0 auto;
+}
+
+
+/* 3. Input
+----------------------------------------------------------------------------- */
+input{
+	width: 32px;
+	height: 32px;
+	margin: 10px;
+	border: none;
+
+	font: inherit;
+	font-size: 14px;
+	color: inherit;
+	text-align: center;
+
+	background-color: #f2f2f2;
+}
+
+input:not([name*=sum]){
+	border-radius: 50%;
+	color: #8a8a8a;
+	box-shadow: inset 0 1px 2px 0 rgba(0,0,0,.03);
+}
+
+input[name*=diagonal]{
+	box-shadow: inset 0 1px 2px 0 rgba(0,0,0,.05);
+	background-image: linear-gradient(180deg, #CAEDE6 0%, #C5E8E2 100%);
+}
+
+input[name*=sum]{
+	padding-top: 4px;
+	padding-bottom: 3px;
+	margin-top: 0;
+	border-top: 3px double lightgrey;
+	background-color: transparent;
+	font-family: "Avenir Heavy", sans-serif;
+}
+
+
+/* 4. Button
+----------------------------------------------------------------------------- */
+
+	/* --- 4.1 General -------------------------------------------------------- */
+	button{
+		position: relative; /* to absolutely position the ::after element */
+		margin: 2px;
+		border: none;
+		border-radius: 2.5px;
+		background-color: #f7f7f7;
+		background-image: linear-gradient(0deg, #f0f0f0 0%, #f3f3f3 100%);
+
+		font: inherit;
+		color: inherit;
+		box-shadow:
+			0 -1px 0 0 #fcfcfc,
+			inset 0 -1px 2px 0 rgba(0,0,0,.05);
+	}
+
+	button[disabled]{
+		background-image: linear-gradient(0deg, #f3f3f3 0%, #f0f0f0 100%);
+		box-shadow:
+			0 1px 0 0 #fcfcfc,
+			inset 0 2px 2px 0 rgba(0,0,0,.03);
+	}
+
+	button:nth-child(5n + 1),
+	button:nth-child(7n){
+		background-image: linear-gradient(180deg, #c5e6df 0%, #b8e0d9 100%);
+	}
+
+	/* --- 4.2 Lines ---------------------------------------------------------- */
+	button[data-row="1"]::before,
+	button[data-column="4"]::after,
+	button[data-row="1"][data-column="5"]::after,
+	button[data-row="5"][data-column="5"]::after{
+		content: '';
+		display: block;
+		position: absolute;
+		z-index: -1;
+		background-color: #e9e9e9;
+	}
+
+	button[data-row="1"]::before{
+		width: 1px;
+		height: 12px;
+		top: -12px;
+		left: 24px;
+	}
+
+	button[data-column="4"]::after{
+		width: 12px;
+		height: 1px;
+		top: 24px;
+		right: -64px;
+	}
+
+	button[data-row="1"][data-column="5"]::after,
+	button[data-row="5"][data-column="5"]::after{
+		width: 1px;
+		height: 25px;
+		right: -9px;
+		background-color: #ceebe5;
+	}
+
+	button[data-row="1"][data-column="5"]::after{
+		top: -21px;
+		transform: rotate(45deg);
+	}
+
+	button[data-row="5"][data-column="5"]::after{
+		top: 44px;
+		transform: rotate(-45deg);
+	}
+
+
+/* 5. Dice
+----------------------------------------------------------------------------- */
+.dice{
+	grid-column: 1 / 6;
+	grid-row: 7 / 9;
+	align-self: center;
+	text-align: center;
+}
+
+.die{
+	display: inline-block;
+	position: relative;
+	vertical-align: top;
+	border-radius: 8px;
+	margin: .75rem;
+
+	text-align: center;
+	background-image: linear-gradient(0deg, #f5f0eb 0%, #faf8f5 100%);
+	background-color: #FFF8F0;
+	box-shadow:
+		1px 2px 3px 0 rgba(0,0,0,.03),
+		2px 4px 6px 0 rgba(0,0,0,.05),
+		4px 8px 12px 0 rgba(0,0,0,.1);
+}
+
+.die::before{
+	content: '';
+	display: block;
+
+	width: 2rem;
+	height: 2rem;
+	padding: .5rem;
+	margin: .125rem;
+	border-radius: 1.5rem;
+
+	box-shadow: -1px -1px 2px 0 #fff, 2px 2px 6px 0 rgba(0,0,0,0.02);
+	background: #fffaf7 url(../images/dice.svg) no-repeat top left;
+}
+
+.die[data-value="2"]::before{ background-position-x: -54px;  }
+.die[data-value="3"]::before{ background-position-x: -108px; }
+.die[data-value="4"]::before{ background-position-x: -162px; }
+.die[data-value="5"]::before{ background-position-x: -216px; }
+.die[data-value="6"]::before{ background-position-x: -270px; }
