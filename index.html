@@ -1,18 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang=en>
 <head>
 	<meta charset=UTF-8>
-	<meta name=viewport content="width=device-width,initial-scale=1.0,user-scalable=no">
-	<title>Knister</title>
-	<meta name=description content="...">
-	<meta name="author" content="Pepijn Gieles">
-	<link rel=manifest href=/assets/favicons/manifest.json>
-	<link rel="stylesheet" type="text/css" href="css/styles.css">
-	<script defer src="js/script.js"></script>
-</head>
-<body>
+	<meta name=viewport content=width=device-width,initial-scale=1.0>
 
-	<div class="canvas columns" data-canvas>
+	<title>Knister</title>
+	<meta name=description content="Knister is a dice game designed by Heinz Wüppen where you get points by making Yhatzee-like combinations in a 5x5 grid.">
+	<meta name=author content="Pepijn Gieles">
+
+	<link rel=icon href=images/favicons/die_icon.ico>
+	<link rel=icon href=images/favicons/die_icon.svg type=image/svg+xml>
+	<link rel=apple-touch-icon href=images/favicons/die_icon-180.png>
+	<link rel=manifest href=manifest.json>
+
+	<link rel=stylesheet type=text/css href=css/styles.css>
+	<script defer src=js/script.js></script>
+</head>
+<body class=show-manual>
+
+	<button class=manual-toggle aria-pressed=true>
+		<span class=visually-hidden>Toggle Manual</span>
+		?
+	</button>
+
+	<div class=board data-canvas>
 
 		<input type=text name=column-1 readonly tabindex=-1>
 		<input type=text name=column-2 readonly tabindex=-1>
@@ -22,55 +33,78 @@
 
 		<input type=text name=diagonal-ttb placeholder=x2 readonly tabindex=-1>
 
-		<button data-row=1 data-column=1 value=0> </button>
-		<button data-row=1 data-column=2 value=0> </button>
-		<button data-row=1 data-column=3 value=0> </button>
-		<button data-row=1 data-column=4 value=0> </button>
-		<button data-row=1 data-column=5 value=0> </button>
+		<button aria-label="Blank. Row 1, column 1" data-row=1 data-column=1 value=0> </button>
+		<button aria-label="Blank. Row 1, column 2" data-row=1 data-column=2 value=0> </button>
+		<button aria-label="Blank. Row 1, column 3" data-row=1 data-column=3 value=0> </button>
+		<button aria-label="Blank. Row 1, column 4" data-row=1 data-column=4 value=0> </button>
+		<button aria-label="Blank. Row 1, column 5" data-row=1 data-column=5 value=0> </button>
 
 		<input type=text name=row-1 readonly tabindex=-1>
 
-		<button data-row=2 data-column=1 value=0> </button>
-		<button data-row=2 data-column=2 value=0> </button>
-		<button data-row=2 data-column=3 value=0> </button>
-		<button data-row=2 data-column=4 value=0> </button>
-		<button data-row=2 data-column=5 value=0> </button>
+		<button aria-label="Blank. Row 2, column 1" data-row=2 data-column=1 value=0> </button>
+		<button aria-label="Blank. Row 2, column 2" data-row=2 data-column=2 value=0> </button>
+		<button aria-label="Blank. Row 2, column 3" data-row=2 data-column=3 value=0> </button>
+		<button aria-label="Blank. Row 2, column 4" data-row=2 data-column=4 value=0> </button>
+		<button aria-label="Blank. Row 2, column 5" data-row=2 data-column=5 value=0> </button>
 
 		<input type=text name=row-2 readonly tabindex=-1>
 
-		<button data-row=3 data-column=1 value=0> </button>
-		<button data-row=3 data-column=2 value=0> </button>
-		<button data-row=3 data-column=3 value=0> </button>
-		<button data-row=3 data-column=4 value=0> </button>
-		<button data-row=3 data-column=5 value=0> </button>
+		<button aria-label="Blank. Row 3, column 1" data-row=3 data-column=1 value=0> </button>
+		<button aria-label="Blank. Row 3, column 2" data-row=3 data-column=2 value=0> </button>
+		<button aria-label="Blank. Row 3, column 3" data-row=3 data-column=3 value=0> </button>
+		<button aria-label="Blank. Row 3, column 4" data-row=3 data-column=4 value=0> </button>
+		<button aria-label="Blank. Row 3, column 5" data-row=3 data-column=5 value=0> </button>
 
 		<input type=text name=row-3 readonly tabindex=-1>
 
-		<button data-row=4 data-column=1 value=0> </button>
-		<button data-row=4 data-column=2 value=0> </button>
-		<button data-row=4 data-column=3 value=0> </button>
-		<button data-row=4 data-column=4 value=0> </button>
-		<button data-row=4 data-column=5 value=0> </button>
+		<button aria-label="Blank. Row 4, column 1" data-row=4 data-column=1 value=0> </button>
+		<button aria-label="Blank. Row 4, column 2" data-row=4 data-column=2 value=0> </button>
+		<button aria-label="Blank. Row 4, column 3" data-row=4 data-column=3 value=0> </button>
+		<button aria-label="Blank. Row 4, column 4" data-row=4 data-column=4 value=0> </button>
+		<button aria-label="Blank. Row 4, column 5" data-row=4 data-column=5 value=0> </button>
 
 		<input type=text name=row-4 readonly tabindex=-1>
 
-		<button data-row=5 data-column=1 value=0> </button>
-		<button data-row=5 data-column=2 value=0> </button>
-		<button data-row=5 data-column=3 value=0> </button>
-		<button data-row=5 data-column=4 value=0> </button>
-		<button data-row=5 data-column=5 value=0> </button>
+		<button aria-label="Blank. Row 5, column 1" data-row=5 data-column=1 value=0> </button>
+		<button aria-label="Blank. Row 5, column 2" data-row=5 data-column=2 value=0> </button>
+		<button aria-label="Blank. Row 5, column 3" data-row=5 data-column=3 value=0> </button>
+		<button aria-label="Blank. Row 5, column 4" data-row=5 data-column=4 value=0> </button>
+		<button aria-label="Blank. Row 5, column 5" data-row=5 data-column=5 value=0> </button>
 
 		<input type=text name=row-5 readonly tabindex=-1>
 
 		<div class=dice>
 			<span class=die data-value=1></span>
 			<span class=die data-value=1></span>
+			<!-- TODO: start game on button press -->
 		</div>
 
 		<input type=text name=diagonal-btt placeholder=x2 readonly tabindex=-1>
-		<input type=text name=score-sum placeholder=Sum readonly tabindex=-1>
+		<input type=text name=score-sum placeholder=Total readonly tabindex=-1>
 
 	</div>
+
+	<aside class=game-manual>
+		<h2>How it works</h2>
+		<p>After each die roll, add the sum in a field by clicking on it. Points are awarded for combinations made in the rows, columns and diagonals. Numbers may be in any order, diagonals will be doubled. After 25 die rolls, when the grid is filled, your total score will be calculated.</p>
+
+		<h2>Combinations</h2>
+		<dl>
+			<dt>One Pair</dt> <dd>1</dd>
+			<dt>Two Pair</dt> <dd>3</dd>
+			<dt>Three of a Kind</dt> <dd>3</dd>
+			<dt>Four of a Kind</dt> <dd>6</dd>
+			<dt>Full House</dt> <dd>8</dd>
+			<dt>Straight</dt> <dd>8</dd>
+			<dt>Five of a Kind</dt> <dd>10</dd>
+			<dt>Straight without 7</dt> <dd>12</dd>
+		</dl>
+
+		<a href=https://nsv.de/nsvspielttv/knister_video/></a>
+		<a href=https://www.youtube.com/watch?v=_HWIPtNJoR8/></a>
+	</aside>
+
+	<div aria-live=assertive class=visually-hidden></div>
 
 </body>
 </html>

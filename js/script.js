@@ -1,12 +1,57 @@
-// 1. Variables
-var roll = 0
-var diceSum
+
+function toggleManual(e){
+	document.body.classList.toggle('show-manual')
+
+	// var pressedState = this.getAttribute('aria-pressed');
+	// console.log(pressedState);
+	// this.setAttribute('aria-pressed', !pressedState);
+	// move keyboard focus to manual element
+}
+
+document.addEventListener('keydown', moveFocus)
+
+function moveFocus(e){
+	// Check if the arrow keys have been hit
+	if (e.keyCode > 36 && e.keyCode < 41) {
+		// Make sure the current focussed element is a grid cell
+		if (e.target.dataset.row){
+			// Get the current row and column
+			var row = e.target.dataset.row
+			var column = e.target.dataset.column
+			// Adjust according to the pressed key
+			if (e.keyCode == 37) column--
+			if (e.keyCode == 38) row--
+			if (e.keyCode == 39) column++
+			if (e.keyCode == 40) row++
+			// Handle edge cases
+			if (row == 6) row = 1
+			if (row == 0) row = 5
+			if (column == 6) column = 1
+			if (column == 0) column = 5
+			//
+			var qs = '[data-row="' + row + '"][data-column="' + column + '"]';
+			var nextCell = document.body.querySelector(qs);
+			//
+			// Focus the right element
+			nextCell.focus()
+		}
+	}
+}
+
+
+
+/* 1. Variables & Event Listeners
+----------------------------------------------------------------------------- */
+var roll = 0,
+		diceSum
 
 const diceElements = document.querySelectorAll('.die'),
 			diceSumEl = document.querySelector('.dice-sum'),
 			scoreSumEl = document.querySelector('[name=score-sum]'),
 			buttons = document.querySelectorAll('[data-canvas] button'),
-			canvasFields = document.querySelectorAll('[data-canvas] input')
+			canvasFields = document.querySelectorAll('[data-canvas] input'),
+			manualToggle = document.querySelector('.manual-toggle'),
+			liveRegion = document.querySelector('[aria-live]')
 
 var scores = {
 	'2-oak': '1',
@@ -19,19 +64,20 @@ var scores = {
 	'high-straight': '12'
 }
 
-// 2. Generate random numbers
+for (var button of buttons) button.addEventListener('click', fillValue)
+manualToggle.addEventListener('click', toggleManual)
+
+/* 2. Generate random numbers
+----------------------------------------------------------------------------- */
 function getRandomNumber(range = [1,6], negative = false){
 	var angle = Math.floor(Math.random()*range[1]) + range[0]
 	if (negative) angle *= Math.round(Math.random()) ? 1 : -1
 	return angle
 }
 
-// 3. Add event listeners to the buttons
-for (var button of buttons){
-	button.addEventListener('click', fillValue)
-}
 
-// 4. Define logic for rolling dice
+/* 3. Define logic for rolling dice
+----------------------------------------------------------------------------- */
 function rollDice(){
 	// Set the dice sum to zero
 	diceSum = 0;
@@ -47,27 +93,40 @@ function rollDice(){
 		die.style.transform = 'rotate(' + getRandomNumber([0,15]) + 'deg)'
 		die.style.margin = getRandomNumber([8,16]) + 'px'
 	}
+	// 
+	liveRegion.innerHTML = 'You rolled ' + diceSum
 }
 
-// 5. Fill in the value from the dice
+
+/* 4. Fill in the value from the dice
+----------------------------------------------------------------------------- */
 function fillValue(){
 
-	// 5.1 Change the clicked button's content
+	if (this.readonly) return; /* readonly is used because disabled won't :focus*/
+
+	// 4.1 Change the clicked button's attributes
 	this.value = diceSum
 	this.innerHTML = diceSum
-	this.disabled = true
+	this.readonly = true
+	// Update the aria-label attribute for screen readers
+	var oldLabel = this.getAttribute('aria-label')
+	var newLabel = oldLabel.replace('Blank', diceSum)
+	this.setAttribute('aria-label', newLabel);
 
-	// 5.2 Create query selectors needed to check if corresponding rows, columns
+	// 4.2 Create query selectors needed to check if corresponding rows, columns
 	// and diagonals are entirely filled
 	var sequenceQs = createQuerySelectors(this)
 
-	// 5.3 Check for every sequence if it's entirely filled
+	// 4.3 Check for every sequence if it's entirely filled
 	for (var querySelector of sequenceQs){
+
 		// Get the needed cells with the query selectors
 		var cells = document.querySelectorAll(querySelector[0])
 		var sequence = new Array()
+
 		// Put every cell's value in an array
 		for (var cell of cells) sequence.push(parseInt(cell.value))
+
 		// If it contains 5 numbers, it's filled. Now calculate the score
 		if (cells.length == 5){
 			// Retrieve the cell that holds the score
@@ -81,15 +140,17 @@ function fillValue(){
 		}
 	}
 
-	// 5.4 Keep track of the amount of rolls to check if the game is finished
+	// 4.4 Keep track of the amount of rolls to check if the game is finished
 	roll++
 	if (roll == 25) finishGame()
 
-	// 5.5 If game is not finished, roll the dice again
+	// 4.5 If game is not finished, roll the dice again
 	else rollDice()
 }
-	
-// 6. Create a set of query selectors for the sequences and score fields
+
+
+/* 5. Create a set of query selectors for the sequences and score fields
+----------------------------------------------------------------------------- */
 function createQuerySelectors(button){
 	return [
 		[
@@ -115,36 +176,32 @@ function createQuerySelectors(button){
 	];
 }
 
-// 7. Calculate a sequence's score
-function calculateScore(array){
 
-	// Sort array from low to high, the logic depends on this order
-	array.sort(function(a, b){return a-b})
+/* 6. Calculate a sequence's score
+----------------------------------------------------------------------------- */
 
-	// Start off first with "five of a kind" because the full-house-logic would
-	// also return true for this
-	if (isSomeOak(array) == 5) return scores['5-oak']
+	// 6.1 Overall function, returning the score
+	function calculateScore(array){
 
-	// Check if it's a straight
-	if (isStraight(array)) {
-		// Check if it contains a 7 or not
-		if(array.includes(7)) return scores['low-straight']
-		else return scores['high-straight']
+		// Sort array from low to high, the logic depends on this order
+		array.sort(function(a, b){return a-b})
+
+		// Check for the possible scores, in the right order
+		if (isSomeOak(array) == 5) return scores['5-oak']
+		if (isStraight(array)) {
+			// Check if it contains a 7 or not
+			if(array.includes(7)) return scores['low-straight']
+			else return scores['high-straight']
+		}
+		if (isFullHouse(array)) return scores['full-house']
+		if (isTwoPair(array)) return scores['two-pair'];
+		if (isSomeOak(array)) return scores[isSomeOak(array) + '-oak']
+
+		// Else,
+		return 0
 	}
 
-	// Now check if it's full house before checking 'some of a kind'
-	if (isFullHouse(array)) return scores['full-house']
-
-	// Check if the array contains two pair
-	if (isTwoPair(array)) return scores['two-pair'];
-
-	// If is some of a kind
-	if (isSomeOak(array)) return scores[isSomeOak(array) + '-oak']
-
-	// Else,
-	return 0
-}
-
+	// Full House
 	function isFullHouse(array){
 		if ( ((array[0] === array[1]) && (array[2] === array[4])) ||
 				 ((array[0] === array[2]) && (array[3] === array[4])) ) {
@@ -152,6 +209,7 @@ function calculateScore(array){
 		}
 	}
 
+	// Straight
 	function isStraight(array){
 		var i = 0
 		while (array[i + 1] == (array[i] + 1) ) i++
@@ -159,6 +217,7 @@ function calculateScore(array){
 		else return false
 	}
 
+	// Two Pair
 	function isTwoPair(array){
 		// A pair of two in an ascending/descending array can be detected by
 		// compairing each value to the next one and check if they're the same.
@@ -174,7 +233,7 @@ function calculateScore(array){
 		else return false;
 	}
 
-	// Check if a sequence is "X of a kind"
+	// Some of a Kind
 	function isSomeOak(array){
 		// For every item of the array...
 		for (var i = 0; i < array.length; i++) {
@@ -192,7 +251,9 @@ function calculateScore(array){
 		return false
 	}
 
-// 8. Finish the game
+
+/* 8. Finish the game
+----------------------------------------------------------------------------- */
 function finishGame(){
 	// Reset score to zero
 	var scoreSum = 0;
@@ -202,5 +263,7 @@ function finishGame(){
 	scoreSumEl.value = scoreSum
 }
 
-// 9. On page load, roll the dice
+
+/* 9. On page load, roll the dice
+----------------------------------------------------------------------------- */
 rollDice()
