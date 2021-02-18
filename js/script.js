@@ -67,12 +67,19 @@ function getRandomNumber(range = [1,6], negative = false){
 }
 
 function toggleManual(e) {
+	// Toggle the CSS class on the body element
 	document.body.classList.toggle('show-manual')
-	localStorage.setItem('bodyClass', JSON.stringify(document.body.classList))
+	// Put the current state in a variable
+	var currentState = (document.body.classList.contains('show-manual')) ? 'open' : 'closed'
+	// Store it in localStorage
+	localStorage.setItem('manual', currentState)
 }
 
-var bodyClass = JSON.parse(localStorage.getItem('bodyClass'))
-if (bodyClass[0] !== 'show-manual') toggleManual()
+if (localStorage.getItem('manual') == null) localStorage.setItem('manual', 'open')
+
+var manualState = localStorage.getItem('manual')
+
+if (manualState == 'closed') toggleManual()
 
 
 /* 4. Define logic for rolling the dice
