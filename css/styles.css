@@ -22,7 +22,7 @@ html{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f9f9f9;
-  padding: calc(var(--page-padding * 2)) var(--page-padding);
+  padding: 10vw var(--page-padding);
   overflow-x: hidden;
 }
 
