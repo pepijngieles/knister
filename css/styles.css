@@ -193,7 +193,7 @@ input[name*=sum]{
 		filter: brightness(96%);
 	}
 
-	button[disabled],
+	button[readonly],
 	.show-manual .manual-toggle{
 		background-image: linear-gradient(0deg, #f3f3f3 0%, #f0f0f0 100%);
 		box-shadow:
@@ -211,8 +211,8 @@ input[name*=sum]{
 		background-image: linear-gradient(180deg, #c5e6df 0%, #b8e0d9 100%);
 	}
 
-	.board button[disabled]:nth-child(5n + 1),
-	.board button[disabled]:nth-child(7n),
+	.board button[readonly]:nth-child(5n + 1),
+	.board button[readonly]:nth-child(7n),
 	.show-manual .manual-toggle{
 		background-image: linear-gradient(180deg, #b8e0d9 0%, #c5e6df 100%);
 	}

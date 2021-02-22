@@ -131,7 +131,7 @@ function updateButtonAttributes(button){
 	// Change the clicked button's attributes
 	button.value = diceSum
 	button.innerHTML = diceSum
-	button.readonly = true
+	button.setAttribute('readonly', 'true')
 	// Update the aria-label attribute for screen readers
 	var oldLabel = button.getAttribute('aria-label')
 	var newLabel = oldLabel.replace('Blank', diceSum)
