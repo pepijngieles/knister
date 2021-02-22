@@ -1,304 +1,304 @@
 /* 1. General
 ----------------------------------------------------------------------------- */
 *{
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 :root{
-	--board-width: 19.25rem;
-	--page-padding: .25rem;
+  --board-width: 19.25rem;
+  --page-padding: .25rem;
 }
 
 @media screen and (min-width: 720px){
-	:root{
-		--page-padding: 1.5rem;
-	}
+  :root{
+    --page-padding: 1.5rem;
+  }
 }
 
 html{
-	font: 100% / 1.5 "Avenir", sans-serif;
-	color: #657371;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	background-color: #f9f9f9;
-	padding: calc(var(--page-padding * 2)) var(--page-padding);
-	overflow-x: hidden;
+  font: 100% / 1.5 "Avenir", sans-serif;
+  color: #657371;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f9f9f9;
+  padding: calc(var(--page-padding * 2)) var(--page-padding);
+  overflow-x: hidden;
 }
 
 .visually-hidden{
-	position: absolute!important;
-	clip: rect(0,0,0,0);
-	clip-path: inset(100%);
-	padding: 0!important;
-	border: none!important;
-	height: 1px!important;
-	width: 1px!important;
-	overflow: hidden;
+  position: absolute!important;
+  clip: rect(0,0,0,0);
+  clip-path: inset(100%);
+  padding: 0!important;
+  border: none!important;
+  height: 1px!important;
+  width: 1px!important;
+  overflow: hidden;
 }
 
 
 /* 2. Board
 ----------------------------------------------------------------------------- */
 .board{
-	max-width: var(--board-width);
-	display: grid;
-	grid-gap: 4px;
-	grid-template-columns: repeat(6, 3rem);
-	grid-template-rows: repeat(8, 3rem);
-	margin: 0 auto 3rem;
+  max-width: var(--board-width);
+  display: grid;
+  grid-gap: 4px;
+  grid-template-columns: repeat(6, 3rem);
+  grid-template-rows: repeat(8, 3rem);
+  margin: 0 auto 3rem;
 }
 
 @media screen and (min-width: 800px){
-	.board{
-		position: absolute;
-		top: calc( 2 * var(--page-padding) );
-		left: calc(50vw - (var(--board-width) / 2));
-		transition: transform .3s ease-out;
-	}
+  .board{
+    position: absolute;
+    top: calc( 2 * var(--page-padding) );
+    left: calc(50vw - (var(--board-width) / 2));
+    transition: transform .3s ease-out;
+  }
 
-	.show-manual .board{
-		transform: translateX( calc( (-.5 * var(--board-width)) - var(--page-padding) ));
-	}
+  .show-manual .board{
+    transform: translateX( calc( (-.5 * var(--board-width)) - var(--page-padding) ));
+  }
 }
 
 
 /* 3. Game Manual
 ----------------------------------------------------------------------------- */
 .game-manual{
-	max-width: var(--board-width);
-	margin: 0 auto;
-	cursor: default;
+  max-width: var(--board-width);
+  margin: 0 auto;
+  cursor: default;
 }
 
 @media screen and (min-width: 800px){
-	.game-manual{
-		transform: translateX(calc(var(--board-width) + var(--page-padding)));
-		position: absolute;
-		top: calc( 2 * var(--page-padding) );
-		right: var(--page-padding);
-		transition: transform .3s ease-out;
-	}
+  .game-manual{
+    transform: translateX(calc(var(--board-width) + var(--page-padding)));
+    position: absolute;
+    top: calc( 2 * var(--page-padding) );
+    right: var(--page-padding);
+    transition: transform .3s ease-out;
+  }
 
-	.show-manual .game-manual{
-		transform: translateX( calc( -1 * (50vw - var(--board-width)) + var(--page-padding) * 2));
-	}
+  .show-manual .game-manual{
+    transform: translateX( calc( -1 * (50vw - var(--board-width)) + var(--page-padding) * 2));
+  }
 }
 
 button.manual-toggle{
-	display: none;
-	position: absolute;
-	top: var(--page-padding);
-	right: calc(50vw - var(--board-width) - ( 4 * var(--page-padding)));
-	padding: .5rem 1rem;
-	font-weight: bold;
+  display: none;
+  position: absolute;
+  top: var(--page-padding);
+  right: calc(50vw - var(--board-width) - ( 4 * var(--page-padding)));
+  padding: .5rem 1rem;
+  font-weight: bold;
 }
 
 @media screen and (min-width: 800px){
-	button.manual-toggle{
-		display: block;
-	}
+  button.manual-toggle{
+    display: block;
+  }
 }
 
 .game-manual h2{
-	font-size: 19px;
-	margin-bottom: .25rem;
+  font-size: 19px;
+  margin-bottom: .25rem;
 }
 
 .game-manual p {
-	margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .game-manual dl{
-	display: grid;
-	grid-template-columns: 1fr auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
 }
 
 .game-manual dt,
 .game-manual dd{
-	padding-bottom: .25rem;
-	margin-bottom: .25rem
+  padding-bottom: .25rem;
+  margin-bottom: .25rem
 }
 
 .game-manual dt:not(:last-of-type),
 .game-manual dd:not(:last-of-type){
-	border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
 .game-manual dd{
-	text-align: right;
-	padding-left: 24px;
+  text-align: right;
+  padding-left: 24px;
 }
 
 
 /* 4. Input
 ----------------------------------------------------------------------------- */
 input{
-	width: 2rem;
-	height: 2rem;
-	margin: .5rem;
-	border: none;
+  width: 2rem;
+  height: 2rem;
+  margin: .5rem;
+  border: none;
 
-	font: inherit;
-	font-size: .875rem;
-	color: inherit;
-	text-align: center;
+  font: inherit;
+  font-size: .875rem;
+  color: inherit;
+  text-align: center;
 
-	background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 input:not([name*=sum]){
-	border-radius: 50%;
-	color: #8a8a8a;
-	box-shadow: inset 0 1px 2px 0 rgba(0,0,0,.05);
+  border-radius: 50%;
+  color: #8a8a8a;
+  box-shadow: inset 0 1px 2px 0 rgba(0,0,0,.05);
 }
 
 input[name*=diagonal]{
-	background-image: linear-gradient(180deg, #CAEDE6 0%, #C5E8E2 100%);
-	box-shadow: inset 0 1px 2px 0 rgba(0,0,0,.06);
+  background-image: linear-gradient(180deg, #CAEDE6 0%, #C5E8E2 100%);
+  box-shadow: inset 0 1px 2px 0 rgba(0,0,0,.06);
 }
 
 input[name*=sum]{
-	padding-top: .25rem;
-	padding-bottom: .1875rem;
-	margin-top: 0;
-	border-top: .1875rem double lightgrey;
-	background-color: transparent;
-	font-family: "Avenir Heavy", sans-serif;
+  padding-top: .25rem;
+  padding-bottom: .1875rem;
+  margin-top: 0;
+  border-top: .1875rem double lightgrey;
+  background-color: transparent;
+  font-family: "Avenir Heavy", sans-serif;
 }
 
 
 /* 5. Button
 ----------------------------------------------------------------------------- */
 
-	/* --- 5.1 General -------------------------------------------------------- */
-	button{
-		min-width: 3rem;
-		min-height: 3rem;
-		position: relative; /* to absolutely position the ::after element */
-		border: none;
-		border-radius: 0.15625rem;
-		background-color: #f7f7f7;
-		background-image: linear-gradient(0deg, #f0f0f0 0%, #f3f3f3 100%);
+  /* --- 5.1 General -------------------------------------------------------- */
+  button{
+    min-width: 3rem;
+    min-height: 3rem;
+    position: relative; /* to absolutely position the ::after element */
+    border: none;
+    border-radius: 0.15625rem;
+    background-color: #f7f7f7;
+    background-image: linear-gradient(0deg, #f0f0f0 0%, #f3f3f3 100%);
 
-		font: inherit;
-		font-size: 1.125rem;
-		color: inherit;
-		box-shadow:
-			0 -1px 0 0 #fcfcfc,
-			inset 0 -1px 2px 0 rgba(0,0,0,.05);
-	}
+    font: inherit;
+    font-size: 1.125rem;
+    color: inherit;
+    box-shadow:
+      0 -1px 0 0 #fcfcfc,
+      inset 0 -1px 2px 0 rgba(0,0,0,.05);
+  }
 
-	button:hover{
-		filter: brightness(96%);
-	}
+  button:hover{
+    filter: brightness(96%);
+  }
 
-	button[readonly],
-	.show-manual .manual-toggle{
-		background-image: linear-gradient(0deg, #f3f3f3 0%, #f0f0f0 100%);
-		box-shadow:
-			0 1px 0 0 #fcfcfc,
-			inset 0 2px 2px 0 rgba(0,0,0,.03);
-	}
+  button[readonly],
+  .show-manual .manual-toggle{
+    background-image: linear-gradient(0deg, #f3f3f3 0%, #f0f0f0 100%);
+    box-shadow:
+      0 1px 0 0 #fcfcfc,
+      inset 0 2px 2px 0 rgba(0,0,0,.03);
+  }
 
-	button:focus{
-		z-index: 1;
-	}
+  button:focus{
+    z-index: 1;
+  }
 
-	.board button:nth-child(5n + 1),
-	.board button:nth-child(7n),
-	.manual-toggle{
-		background-image: linear-gradient(180deg, #c5e6df 0%, #b8e0d9 100%);
-	}
+  .board button:nth-child(5n + 1),
+  .board button:nth-child(7n),
+  .manual-toggle{
+    background-image: linear-gradient(180deg, #c5e6df 0%, #b8e0d9 100%);
+  }
 
-	.board button[readonly]:nth-child(5n + 1),
-	.board button[readonly]:nth-child(7n),
-	.show-manual .manual-toggle{
-		background-image: linear-gradient(180deg, #b8e0d9 0%, #c5e6df 100%);
-	}
+  .board button[readonly]:nth-child(5n + 1),
+  .board button[readonly]:nth-child(7n),
+  .show-manual .manual-toggle{
+    background-image: linear-gradient(180deg, #b8e0d9 0%, #c5e6df 100%);
+  }
 
-	/* --- 5.2 Lines ---------------------------------------------------------- */
-	button[data-row="1"]::before,
-	button[data-column="4"]::after,
-	button[data-row="1"][data-column="5"]::after,
-	button[data-row="5"][data-column="5"]::after{
-		content: '';
-		display: block;
-		position: absolute;
-		z-index: -1;
-		background-color: #e9e9e9;
-	}
+  /* --- 5.2 Lines ---------------------------------------------------------- */
+  button[data-row="1"]::before,
+  button[data-column="4"]::after,
+  button[data-row="1"][data-column="5"]::after,
+  button[data-row="5"][data-column="5"]::after{
+    content: '';
+    display: block;
+    position: absolute;
+    z-index: -1;
+    background-color: #e9e9e9;
+  }
 
-	button[data-row="1"]::before{
-		width: 1px;
-		height: .75rem;
-		top: -.75rem;
-		left: 1.5rem;
-	}
+  button[data-row="1"]::before{
+    width: 1px;
+    height: .75rem;
+    top: -.75rem;
+    left: 1.5rem;
+  }
 
-	button[data-column="4"]::after{
-		width: 12px;
-		height: 1px;
-		top: 24px;
-		right: -64px;
-	}
+  button[data-column="4"]::after{
+    width: 12px;
+    height: 1px;
+    top: 24px;
+    right: -64px;
+  }
 
-	button[data-row="1"][data-column="5"]::after,
-	button[data-row="5"][data-column="5"]::after{
-		width: 1px;
-		height: 25px;
-		right: -9px;
-		background-color: #ceebe5;
-	}
+  button[data-row="1"][data-column="5"]::after,
+  button[data-row="5"][data-column="5"]::after{
+    width: 1px;
+    height: 25px;
+    right: -9px;
+    background-color: #ceebe5;
+  }
 
-	button[data-row="1"][data-column="5"]::after{
-		top: -21px;
-		transform: rotate(45deg);
-	}
+  button[data-row="1"][data-column="5"]::after{
+    top: -21px;
+    transform: rotate(45deg);
+  }
 
-	button[data-row="5"][data-column="5"]::after{
-		top: 44px;
-		transform: rotate(-45deg);
-	}
+  button[data-row="5"][data-column="5"]::after{
+    top: 44px;
+    transform: rotate(-45deg);
+  }
 
 
 /* 6. Dice
 ----------------------------------------------------------------------------- */
 .dice{
-	grid-column: 1 / 6;
-	grid-row: 7 / 9;
-	align-self: center;
-	text-align: center;
+  grid-column: 1 / 6;
+  grid-row: 7 / 9;
+  align-self: center;
+  text-align: center;
 }
 
 .die{
-	display: inline-block;
-	position: relative;
-	vertical-align: top;
-	border-radius: 8px;
-	margin: .85rem;
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  border-radius: 8px;
+  margin: .85rem;
 
-	text-align: center;
-	background-image: linear-gradient(0deg, #f5f0eb 0%, #faf8f5 100%);
-	background-color: #fff8f0;
-	box-shadow:
-		1px 2px 3px 0 rgba(0,0,0,.03),
-		2px 4px 6px 0 rgba(0,0,0,.05),
-		4px 8px 12px 0 rgba(0,0,0,.1);
+  text-align: center;
+  background-image: linear-gradient(0deg, #f5f0eb 0%, #faf8f5 100%);
+  background-color: #fff8f0;
+  box-shadow:
+    1px 2px 3px 0 rgba(0,0,0,.03),
+    2px 4px 6px 0 rgba(0,0,0,.05),
+    4px 8px 12px 0 rgba(0,0,0,.1);
 }
 
 .die::before{
-	content: '';
-	display: block;
+  content: '';
+  display: block;
 
-	width: 36px;
-	height: 36px;
-	padding: 9px;
-	margin: 2px;
-	border-radius: 1.5rem;
+  width: 36px;
+  height: 36px;
+  padding: 9px;
+  margin: 2px;
+  border-radius: 1.5rem;
 
-	box-shadow: -1px -1px 2px 0 #fff, 2px 2px 6px 0 rgba(0,0,0,0.02);
-	background: #fffaf7 url(../images/dice.svg) no-repeat center left;
+  box-shadow: -1px -1px 2px 0 #fff, 2px 2px 6px 0 rgba(0,0,0,0.02);
+  background: #fffaf7 url(../images/dice.svg) no-repeat center left;
 }
 
 .die[data-value="2"]::before{ background-position-x: -54px;  }
