@@ -14,9 +14,8 @@
     }
   ],
   "theme_color": "#b8dbd5",
-  "background_color": "#ffffff",
+  "background_color": "#f9f9f9",
   "display": "standalone",
   "description": "Knister is a dice game designed by Heinz Wüppen where you get points by making Yhatzee-like combinations in a 5x5 grid.",
-  "start_url": "/",
   "orientation": "any"
 }
