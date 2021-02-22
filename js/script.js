@@ -277,7 +277,7 @@ function fillValue(sequenceQs){
 ----------------------------------------------------------------------------- */
 function finishGame(){
   // Reset score to zero
-  var scoreSum = 0;
+  var scoreSum = 0
   // Add up all values of the fields
   for (var field of canvasFields) scoreSum += Number(field.value)
   // Add the sum tot the field
@@ -306,8 +306,8 @@ function moveFocus(e){
       if (column == 6) column = 1
       if (column == 0) column = 5
       //
-      var qs = '[data-row="' + row + '"][data-column="' + column + '"]';
-      var nextCell = document.body.querySelector(qs);
+      var qs = '[data-row="' + row + '"][data-column="' + column + '"]'
+      var nextCell = document.body.querySelector(qs)
       //
       // Focus the right element
       nextCell.focus()
