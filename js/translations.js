@@ -19,7 +19,7 @@ const translations = [
     'cmb-i6': 'Straat',
     'cmb-i7': 'Vijfling',
     'cmb-i8': 'Straat zonder 7',
-    }
+  }
 ]
 
 // Retreive the user's system language
