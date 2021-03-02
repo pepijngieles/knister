@@ -32,8 +32,8 @@ var roll = 0,
 const diceElements = document.querySelectorAll('.die'),
       diceSumEl = document.querySelector('.dice-sum'),
       scoreSumEl = document.querySelector('[name=score-sum]'),
-      buttons = document.querySelectorAll('[data-canvas] button'),
-      canvasFields = document.querySelectorAll('[data-canvas] input'),
+      buttons = document.querySelectorAll('[data-board] button'),
+      canvasFields = document.querySelectorAll('[data-board] input'),
       manualToggle = document.querySelector('.manual-toggle'),
       liveRegion = document.querySelector('[aria-live]'),
       scores = {
@@ -108,7 +108,7 @@ function rollDice(){
 ----------------------------------------------------------------------------- */
 function handleButtonClick(){
   // Don't allow clicks on already filled buttons
-  if (this.readonly) return; /* readonly is used because disabled won't :focus*/
+  if (this.getAttribute('readonly')) return /* readonly because disabled won't :focus*/
   // Update the button's attributes
   updateButtonAttributes(this)
   // Create query selectors needed to check if corresponding rows, columns
@@ -155,12 +155,12 @@ function createQuerySelectors(button){
     ],
     [
       // Query for the 'bottom-left-to-top-right' diagonal
-      '[data-canvas] button:nth-child(5n + 1):not([value="0"])',
+      '[data-board] button:nth-child(5n + 1):not([value="0"])',
       '[name="diagonal-ttb"]'
     ],
     [
       // Query for the 'top-left-to-bottom-right' diagonal
-      '[data-canvas] button:nth-child(7n):not([value="0"])',
+      '[data-board] button:nth-child(7n):not([value="0"])',
       '[name="diagonal-btt"]'
     ]
   ];
@@ -176,7 +176,7 @@ function createSequence(querySelector){
   // 2. Put every cell's value in an array
   for (var cell of cells) sequence.push(parseInt(cell.value))
   // 3. If it contains 5 numbers, it's entirely filled
-  return sequence
+  return { 'numbers': sequence, 'elements': cells }
 }
 
 
@@ -260,9 +260,9 @@ function fillValue(sequenceQs){
     // Get the sequence
     var sequence = createSequence(querySelector)
     // If it contains 5 numbers, it's filled. Now calculate the score
-    if (sequence.length == 5){
+    if (sequence.numbers.length == 5){
       // Calculate the score
-      var score = calculateScore(sequence)
+      var score = calculateScore(sequence.numbers)
       // If it's the diagonal sequence, double the score
       if(querySelector[1].includes("diagonal")) score *= 2
       // Fill the score in the right cell
