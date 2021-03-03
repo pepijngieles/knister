@@ -1,1 +1,25 @@
-<svg width="324" height="54" xmlns="http://www.w3.org/2000/svg"><g fill="#5A6664" fill-rule="evenodd"><circle cx="27" cy="27" r="4"/><circle cx="135" cy="27" r="4"/><circle cx="94" cy="14" r="4"/><circle cx="148" cy="14" r="4"/><circle cx="68" cy="40" r="4"/><circle cx="122" cy="40" r="4"/><circle cx="176" cy="14" r="4"/><circle cx="202" cy="14" r="4"/><circle cx="202" cy="40" r="4"/><circle cx="176" cy="40" r="4"/><circle cx="243" cy="27" r="4"/><circle cx="230" cy="14" r="4"/><circle cx="256" cy="14" r="4"/><circle cx="256" cy="40" r="4"/><circle cx="230" cy="40" r="4"/><circle cx="284" cy="27" r="4"/><circle cx="310" cy="27" r="4"/><circle cx="284" cy="14" r="4"/><circle cx="310" cy="14" r="4"/><circle cx="310" cy="40" r="4"/><circle cx="284" cy="40" r="4"/></g></svg>
+<svg width="288" height="48" viewBox="0 0 288 48" xmlns="http://www.w3.org/2000/svg">
+  <g fill="#5A6664" fill-rule="evenodd">
+    <circle cx="276" cy="36" r="4"/>
+    <circle cx="252" cy="36" r="4"/>
+    <circle cx="276" cy="24" r="4"/>
+    <circle cx="252" cy="24" r="4"/>
+    <circle cx="276" cy="12" r="4"/>
+    <circle cx="252" cy="12" r="4"/>
+    <circle cx="228" cy="36" r="4"/>
+    <circle cx="204" cy="36" r="4"/>
+    <circle cx="216" cy="24" r="4"/>
+    <circle cx="228" cy="12" r="4"/>
+    <circle cx="204" cy="12" r="4"/>
+    <circle cx="180" cy="36" r="4"/>
+    <circle cx="156" cy="36" r="4"/>
+    <circle cx="180" cy="12" r="4"/>
+    <circle cx="156" cy="12" r="4"/>
+    <circle cx="132" cy="12" r="4"/>
+    <circle cx="120" cy="24" r="4"/>
+    <circle cx="108" cy="36" r="4"/>
+    <circle cx="84" cy="12" r="4"/>
+    <circle cx="60" cy="36" r="4"/>
+    <circle cx="24" cy="24" r="4"/>
+  </g>
+</svg>

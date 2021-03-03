@@ -81,8 +81,13 @@ function rollDice(){
     // Add it to the die element
     die.dataset.value = amount
     // Randomly position the die
-    die.style.transform = 'rotate(' + getRandomNumber([0,15]) + 'deg)'
-    die.style.margin = getRandomNumber([8,16]) + 'px'
+    die.style.transform = 'rotate(' + getRandomNumber([0,15], true) + 'deg)'
+    die.style.margin = (getRandomNumber([5,12]) / 10) + 'rem'
+    // Remove and, with a delay, add the show class to animate in
+    die.classList.remove('show');
+    setTimeout(function(){
+      die.classList.add('show')
+    },240)
   }
   // Update the live reagion for screen readers
   liveRegion.innerHTML = 'You rolled ' + diceSum

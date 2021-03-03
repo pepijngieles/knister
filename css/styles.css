@@ -6,8 +6,8 @@
 }
 
 :root{
-  --board-width: 19.25rem;
-  --page-padding: .25rem;
+  --board-width: 18.75rem;
+  --page-padding: .5rem;
 }
 
 @media screen and (min-width: 720px){
@@ -22,8 +22,20 @@ html{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f9f9f9;
-  padding: 10vw var(--page-padding);
+  padding-top: 8vw;
   overflow-x: hidden;
+}
+
+@media screen and (min-width: 374px){
+  html{
+    font-size: 112.5%
+  }
+}
+
+@media screen and (min-width: 413px){
+  html{
+    font-size: 125%
+  }
 }
 
 .visually-hidden{
@@ -45,13 +57,13 @@ html{
 .board{
   max-width: var(--board-width);
   display: grid;
-  grid-gap: 4px;
-  grid-template-columns: repeat(6, 3rem);
+  grid-gap: .25rem;
+  grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(8, 3rem);
   margin: 0 auto 3rem;
 }
 
-@media screen and (min-width: 800px){
+@media screen and (min-width: 50rem){
   .board{
     position: absolute;
     top: calc( 2 * var(--page-padding) );
@@ -73,7 +85,7 @@ html{
   cursor: default;
 }
 
-@media screen and (min-width: 800px){
+@media screen and (min-width: 50rem){
   .game-manual{
     transform: translateX(calc(var(--board-width) + var(--page-padding)));
     position: absolute;
@@ -96,14 +108,14 @@ button.manual-toggle{
   font-weight: bold;
 }
 
-@media screen and (min-width: 800px){
+@media screen and (min-width: 50rem){
   button.manual-toggle{
     display: block;
   }
 }
 
 .game-manual h2{
-  font-size: 19px;
+  font-size: 1.25rem;
   margin-bottom: .25rem;
 }
 
@@ -124,21 +136,21 @@ button.manual-toggle{
 
 .game-manual dt:not(:last-of-type),
 .game-manual dd:not(:last-of-type){
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eeeeee;
 }
 
 .game-manual dd{
   text-align: right;
-  padding-left: 24px;
+  padding-left: 1.5rem;
 }
 
 
 /* 4. Input
 ----------------------------------------------------------------------------- */
 input{
-  width: 2rem;
-  height: 2rem;
-  margin: .5rem;
+  max-width: 2rem;
+  max-height: 2rem;
+  margin: .5rem 0 .5rem .5rem;
   border: none;
 
   font: inherit;
@@ -146,7 +158,7 @@ input{
   color: inherit;
   text-align: center;
 
-  background-color: #f2f2f2;
+  background-color: #f0f1f2;
 }
 
 input:not([name*=sum]){
@@ -156,7 +168,7 @@ input:not([name*=sum]){
 }
 
 input[name*=diagonal]{
-  background-image: linear-gradient(180deg, #CAEDE6 0%, #C5E8E2 100%);
+  background-image: linear-gradient(180deg, #caede6 0%, #c5e8e2 100%);
   box-shadow: inset 0 1px 2px 0 rgba(0,0,0,.06);
 }
 
@@ -181,7 +193,7 @@ input[name*=sum]{
     border: none;
     border-radius: 0.15625rem;
     background-color: #f7f7f7;
-    background-image: linear-gradient(0deg, #f0f0f0 0%, #f3f3f3 100%);
+    background-image: linear-gradient(0deg, #ebeef0 0%, #f0f1f2 100%);
 
     font: inherit;
     font-size: 1.125rem;
@@ -197,7 +209,7 @@ input[name*=sum]{
 
   button[readonly],
   .show-manual .manual-toggle{
-    background-image: linear-gradient(0deg, #f3f3f3 0%, #f0f0f0 100%);
+    background-image: linear-gradient(0deg, #f0f1f2 0%, #ebeef0 100%);
     box-shadow:
       0 1px 0 0 #fcfcfc,
       inset 0 2px 2px 0 rgba(0,0,0,.03);
@@ -228,7 +240,7 @@ input[name*=sum]{
     display: block;
     position: absolute;
     z-index: -1;
-    background-color: #e9e9e9;
+    background-color: #e3e5e6;
   }
 
   button[data-row="1"]::before{
@@ -239,27 +251,27 @@ input[name*=sum]{
   }
 
   button[data-column="4"]::after{
-    width: 12px;
+    width: .75rem;
     height: 1px;
-    top: 24px;
-    right: -64px;
+    top: 1.5rem;
+    right: -4rem;
   }
 
   button[data-row="1"][data-column="5"]::after,
   button[data-row="5"][data-column="5"]::after{
     width: 1px;
-    height: 25px;
-    right: -9px;
+    height: calc(1.5rem + 1px);
+    right: calc(-.5rem - 1px);
     background-color: #ceebe5;
   }
 
   button[data-row="1"][data-column="5"]::after{
-    top: -21px;
+    top: calc(-1.25rem - 1px);
     transform: rotate(45deg);
   }
 
   button[data-row="5"][data-column="5"]::after{
-    top: 44px;
+    top: 2.75rem;
     transform: rotate(-45deg);
   }
 
@@ -276,22 +288,22 @@ input[name*=sum]{
 
   .animate.row[data-column="2"],
   .animate.column[data-row="4"]{
-    animation-delay: .1s!important
+    animation-delay: .08s!important
   }
 
   .animate.row[data-column="3"],
   .animate.column[data-row="3"]{
-    animation-delay: .2s!important
+    animation-delay: .16s!important
   }
 
   .animate.row[data-column="4"],
   .animate.column[data-row="2"]{
-    animation-delay: .3s!important
+    animation-delay: .24s!important
   }
 
   .animate.row[data-column="5"],
   .animate.column[data-row="1"]{
-    animation-delay: .4s!important
+    animation-delay: .32s!important
   }
 
 
@@ -308,34 +320,46 @@ input[name*=sum]{
   display: inline-block;
   position: relative;
   vertical-align: top;
-  border-radius: 8px;
+  border-radius: .5rem;
   margin: .85rem;
-
   text-align: center;
   background-image: linear-gradient(0deg, #f5f0eb 0%, #faf8f5 100%);
   background-color: #fff8f0;
   box-shadow:
-    1px 2px 3px 0 rgba(0,0,0,.03),
-    2px 4px 6px 0 rgba(0,0,0,.05),
-    4px 8px 12px 0 rgba(0,0,0,.1);
+    .0625rem .125rem .1875rem 0 rgba(0,0,0,.03),
+    .125rem .25rem .375rem 0 rgba(0,0,0,.05),
+    .25rem .5rem .75rem 0 rgba(0,0,0,.1);
+  transition:
+    transform .12s,
+    opacity .12s;
+}
+
+.die:not(.show){
+  transform: translateY(3rem)!important;
+  opacity: 0;
+  transition: none;
+}
+
+.die:nth-of-type(2){
+  transition-delay: .05s
 }
 
 .die::before{
   content: '';
   display: block;
-
-  width: 36px;
-  height: 36px;
-  padding: 9px;
-  margin: 2px;
-  border-radius: 1.5rem;
-
-  box-shadow: -1px -1px 2px 0 #fff, 2px 2px 6px 0 rgba(0,0,0,0.02);
+  width: 3rem;
+  height: 3rem;
+  margin: .125rem;
+  border-radius: 50%;
+  box-shadow:
+    .0625rem .0625rem .125rem 0 #ffffff,
+    .125rem .125rem .375rem 0 rgba(0,0,0,0.02);
   background: #fffaf7 url(../images/dice.svg) no-repeat center left;
+  background-size: 18rem;
 }
 
-.die[data-value="2"]::before{ background-position-x: -54px;  }
-.die[data-value="3"]::before{ background-position-x: -108px; }
-.die[data-value="4"]::before{ background-position-x: -162px; }
-.die[data-value="5"]::before{ background-position-x: -216px; }
-.die[data-value="6"]::before{ background-position-x: -270px; }
+.die[data-value="2"]::before{ background-position-x: -3rem  }
+.die[data-value="3"]::before{ background-position-x: -6rem  }
+.die[data-value="4"]::before{ background-position-x: -9rem  }
+.die[data-value="5"]::before{ background-position-x: -12rem }
+.die[data-value="6"]::before{ background-position-x: -15rem }
