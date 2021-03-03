@@ -8,15 +8,15 @@
     4. Define logic for rolling the dice
     5. Handle clicks on the board's buttons
     6. Update a button's attributes
-    7. Create a set of query selectors for the sequences and score fields
-    8. Create a sequence of cell values from a querySelector
+    7. Build a set of query selectors for the sequences and score fields
+    8. Build a sequence of cell values from a querySelector
     9. Calculate a sequence's score
       - 9.1 Overall function, returning the score
       - 9.2 Full house
       - 9.3 Straight
       - 9.4 Two Pair
       - 9.5 Some of a kind
-    10. Fill in a button's value
+    10. Calculate and fill in a sequence's value
     11. Finish the game
     12. Keyboard controls
     13. On page load, roll the dice
@@ -26,14 +26,14 @@
 
 /* 1. Variables
 ----------------------------------------------------------------------------- */
-var roll = 0,
+let roll = 0,
     diceSum
 
 const diceElements = document.querySelectorAll('.die'),
       diceSumEl = document.querySelector('.dice-sum'),
       scoreSumEl = document.querySelector('[name=score-sum]'),
       buttons = document.querySelectorAll('[data-board] button'),
-      canvasFields = document.querySelectorAll('[data-board] input'),
+      boardFields = document.querySelectorAll('[data-board] input'),
       manualToggle = document.querySelector('.manual-toggle'),
       liveRegion = document.querySelector('[aria-live]'),
       scores = {
@@ -51,7 +51,7 @@ const diceElements = document.querySelectorAll('.die'),
 /* 2. Event listeners
 ----------------------------------------------------------------------------- */
 // All buttons on the board
-for (var button of buttons) button.addEventListener('click', handleButtonClick)
+for (let button of buttons) button.addEventListener('click', handleButtonClick)
 // Game manual button
 manualToggle.addEventListener('click', toggleManual)
 // Keyboard controls
@@ -61,25 +61,10 @@ document.addEventListener('keydown', moveFocus)
 /* 3. Generic functions
 ----------------------------------------------------------------------------- */
 function getRandomNumber(range = [1,6], negative = false){
-  var angle = Math.floor(Math.random()*range[1]) + range[0]
+  let angle = Math.floor(Math.random()*range[1]) + range[0]
   if (negative) angle *= Math.round(Math.random()) ? 1 : -1
   return angle
 }
-
-function toggleManual(e) {
-  // Toggle the CSS class on the body element
-  document.body.classList.toggle('show-manual')
-  // Put the current state in a variable
-  var currentState = (document.body.classList.contains('show-manual')) ? 'open' : 'closed'
-  // Store it in localStorage
-  localStorage.setItem('manual', currentState)
-}
-
-if (localStorage.getItem('manual') == null) localStorage.setItem('manual', 'open')
-
-var manualState = localStorage.getItem('manual')
-
-if (manualState == 'closed') toggleManual()
 
 
 /* 4. Define logic for rolling the dice
@@ -88,9 +73,9 @@ function rollDice(){
   // Set the dice sum to zero
   diceSum = 0;
   // For both dice
-  for (var die of diceElements){
+  for (let die of diceElements){
     // Generate a random number between 1 and 6
-    var amount = getRandomNumber()
+    let amount = getRandomNumber()
     // Add it to the dice sum
     diceSum += amount
     // Add it to the die element
@@ -108,16 +93,17 @@ function rollDice(){
 ----------------------------------------------------------------------------- */
 function handleButtonClick(){
   // Don't allow clicks on already filled buttons
-  if (this.getAttribute('readonly')) return /* readonly because disabled won't :focus*/
+  // Using [readonly] because [disabled] won't allow :focus
+  if (this.getAttribute('readonly')) return
   // Update the button's attributes
   updateButtonAttributes(this)
   // Reset the animation classes for every button
-  for (var el of buttons) el.classList.remove('animate', 'row', 'column')
+  for (let el of buttons) el.classList.remove('animate', 'row', 'column')
   // Create query selectors needed to check if corresponding rows, columns
   // and diagonals are entirely filled
-  var sequenceQs = createQuerySelectors(this)
+  let sequenceQs = buildQuerySelectors(this)
   // Calculate and fill the value with the query selectors
-  fillValue(sequenceQs)
+  fillSequenceValue(sequenceQs)
   // Keep track of the amount of rolls
   roll++
   // Check if the game is finished
@@ -135,13 +121,13 @@ function updateButtonAttributes(button){
   button.innerHTML = diceSum
   button.setAttribute('readonly', 'true')
   // Update the aria-label attribute for screen readers
-  var oldLabel = button.getAttribute('aria-label')
-  var newLabel = oldLabel.replace('Blank', diceSum)
+  let oldLabel = button.getAttribute('aria-label')
+  let newLabel = oldLabel.replace('Blank', diceSum)
   button.setAttribute('aria-label', newLabel)
 }
 
 
-/* 7. Create a set of query selectors for the sequences and score fields
+/* 7. Build a set of query selectors for the sequences and score fields
 ----------------------------------------------------------------------------- */
 // 1. Create constant variables for the diagonal query selectors
       // Query for the 'bottom-left-to-top-right' diagonal
@@ -153,9 +139,9 @@ const diagonalTtb = [
         '[data-board] button:nth-child(7n):not([value="0"])',
         '[name="diagonal-btt"]' ]
 
-function createQuerySelectors(button){
-  // 1. Create a variable to hold the query selectors
-  var sequenceQs = [[
+function buildQuerySelectors(button){
+  // 2. Create a variable to hold the query selectors
+  let sequenceQs = [[
       // Row of the clicked cell
       '[data-row="' + button.dataset.row + '"]:not([value="0"])',
       '[name="row-' + button.dataset.row + '"]'
@@ -164,8 +150,8 @@ function createQuerySelectors(button){
       '[data-column="' + button.dataset.column + '"]:not([value="0"])',
       '[name="column-' + button.dataset.column + '"]'
     ]]
- // 2. Add diagonals if needed
-  var els = document.body.querySelectorAll(diagonalTtb[0])
+ // 3. Add diagonals if needed
+  let els = document.body.querySelectorAll(diagonalTtb[0])
   for (let el of els){
     if (el == button) {
       sequenceQs.push(diagonalTtb)
@@ -178,19 +164,19 @@ function createQuerySelectors(button){
       sequenceQs.push(diagonalBtt)
     }
   }
-  // 3. Return the variable
+  // 4. Return the variable
   return sequenceQs;
 }
 
 
-/* 8. Create a sequence of cell values from a querySelector
+/* 8. Build a sequence of cell values from a querySelector
 ----------------------------------------------------------------------------- */
-function createSequence(querySelector){
+function buildSequence(querySelector){
   // .1. Get the needed cells with the query selectors
-  var cells = document.querySelectorAll(querySelector[0])
-  var sequence = new Array()
+  let cells = document.querySelectorAll(querySelector[0])
+  let sequence = new Array()
   // 2. Put every cell's value in an array
-  for (var cell of cells) sequence.push(parseInt(cell.value))
+  for (let cell of cells) sequence.push(parseInt(cell.value))
   // 3. If it contains 5 numbers, it's entirely filled
   return { 'numbers': sequence, 'elements': cells }
 }
@@ -227,7 +213,7 @@ function createSequence(querySelector){
 
   /* --- 9.3 Straight --- */
   function isStraight(array){
-    var i = 0
+    let i = 0
     while (array[i + 1] == (array[i] + 1) ) i++
     if (i == 4) return true
     else return false
@@ -238,9 +224,9 @@ function createSequence(querySelector){
     // A pair of two in an ascending/descending array can be detected by
     // compairing each value to the next one and check if they're the same.
     // In total it should happen twice that they're not.
-    var differences = 0;
+    let differences = 0;
     // Check every item
-    for (var i = 0; i < array.length - 1; i++) {
+    for (let i = 0; i < array.length - 1; i++) {
       // Keep track of differences
       if(array[i] !== array[i + 1]) differences++
     }
@@ -252,11 +238,11 @@ function createSequence(querySelector){
   /* --- 9.5 Some of a kind --- */
   function isSomeOak(array){
     // For every item of the array...
-    for (var i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
       // Reset the counter to 0
-      var counter = 0
+      let counter = 0
       // Compary to every other value
-      for (var j = 0; j < array.length; j++) {
+      for (let j = 0; j < array.length; j++) {
         // If there's match, increase the counter
         if (array[j] == array[i]) counter++
       }
@@ -268,28 +254,28 @@ function createSequence(querySelector){
   }
 
 
-/* 10. Calculate and fill in a button's value
+/* 10. Calculate and fill in a sequence's value
 ----------------------------------------------------------------------------- */
-function fillValue(sequenceQs){
+function fillSequenceValue(sequenceQs){
   // Check for every sequence if it's entirely filled
-  for (var querySelector of sequenceQs){
+  for (let querySelector of sequenceQs){
     // Get the sequence
-    var sequence = createSequence(querySelector)
+    let sequence = buildSequence(querySelector)
     // If it contains 5 numbers, it's filled. Now calculate the score
     if (sequence.numbers.length == 5){
       // Calculate the score
-      var score = calculateScore(sequence.numbers)
+      let score = calculateScore(sequence.numbers)
       // If it's the diagonal sequence, double the score
       if(querySelector[1].includes("diagonal")) score *= 2
       // Fill the score in the right cell
-      var scoreCell = document.querySelector(querySelector[1])
+      let scoreCell = document.querySelector(querySelector[1])
       scoreCell.value = score
 
       // 10.2 Animation
       // Determine which direction this sequence is, needed for the animation
-      var direction = (querySelector[0].includes('column')) ? 'column' : 'row'
+      let direction = (querySelector[0].includes('column')) ? 'column' : 'row'
       // Add the .animate and .row or .column classes to every element
-      for (var el of sequence.elements) el.classList.add('animate', direction)
+      for (let el of sequence.elements) el.classList.add('animate', direction)
     }
   }
 }
@@ -299,9 +285,9 @@ function fillValue(sequenceQs){
 ----------------------------------------------------------------------------- */
 function finishGame(){
   // Reset score to zero
-  var scoreSum = 0
+  let scoreSum = 0
   // Add up all values of the fields
-  for (var field of canvasFields) scoreSum += Number(field.value)
+  for (let field of boardFields) scoreSum += Number(field.value)
   // Add the sum tot the field
   scoreSumEl.value = scoreSum
 }
@@ -315,8 +301,8 @@ function moveFocus(e){
     // Make sure the current focussed element is a grid cell
     if (e.target.dataset.row){
       // Get the current row and column
-      var row = e.target.dataset.row
-      var column = e.target.dataset.column
+      let row = e.target.dataset.row
+      let column = e.target.dataset.column
       // Adjust according to the pressed key
       if (e.keyCode == 37) column--
       if (e.keyCode == 38) row--
@@ -328,8 +314,8 @@ function moveFocus(e){
       if (column == 6) column = 1
       if (column == 0) column = 5
       //
-      var qs = '[data-row="' + row + '"][data-column="' + column + '"]'
-      var nextCell = document.body.querySelector(qs)
+      let qs = '[data-row="' + row + '"][data-column="' + column + '"]'
+      let nextCell = document.body.querySelector(qs)
       //
       // Focus the right element
       nextCell.focus()
@@ -338,6 +324,28 @@ function moveFocus(e){
 }
 
 
-/* 13. On page load, roll the dice
+/* 13. Toggle Manual
+----------------------------------------------------------------------------- */
+function toggleManual(e) {
+  // Toggle the CSS class on the body element
+  document.body.classList.toggle('show-manual')
+  // Put the current state in a variable
+  let manualOpened = document.body.classList.contains('show-manual')
+  let currentState = (manualOpened) ? 'open' : 'closed'
+  // Store it in localStorage
+  localStorage.setItem('manual', currentState)
+}
+
+// Check if localStorage item exists. If not, create one
+if (localStorage.getItem('manual') == null) localStorage.setItem('manual', 'open')
+
+// Retreive manual state from localStorage
+let manualState = localStorage.getItem('manual')
+
+// Close manual if needed
+if (manualState == 'closed') toggleManual()
+
+
+/* 14. On page load, roll the dice
 ----------------------------------------------------------------------------- */
 rollDice()
