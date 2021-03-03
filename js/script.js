@@ -313,13 +313,14 @@ function moveFocus(e){
       if (row == 0) row = 5
       if (column == 6) column = 1
       if (column == 0) column = 5
-      //
+      // Create a query selector to retreive the next cell
       let qs = '[data-row="' + row + '"][data-column="' + column + '"]'
       let nextCell = document.body.querySelector(qs)
-      //
       // Focus the right element
       nextCell.focus()
     }
+    // If there's no focus on an element yet, move it to the first button
+    else if(!document.querySelector(':focus')) buttons[0].focus()
   }
 }
 
