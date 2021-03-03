@@ -111,6 +111,8 @@ function handleButtonClick(){
   if (this.getAttribute('readonly')) return /* readonly because disabled won't :focus*/
   // Update the button's attributes
   updateButtonAttributes(this)
+  // Reset the animation classes for every button
+  for (var el of buttons) el.classList.remove('animate', 'row', 'column')
   // Create query selectors needed to check if corresponding rows, columns
   // and diagonals are entirely filled
   var sequenceQs = createQuerySelectors(this)
@@ -141,29 +143,43 @@ function updateButtonAttributes(button){
 
 /* 7. Create a set of query selectors for the sequences and score fields
 ----------------------------------------------------------------------------- */
+// 1. Create constant variables for the diagonal query selectors
+      // Query for the 'bottom-left-to-top-right' diagonal
+const diagonalTtb = [    
+        '[data-board] button:nth-child(5n + 1):not([value="0"])',
+        '[name="diagonal-ttb"]' ],
+      // Query for the 'top-left-to-bottom-right' diagonal
+      diagonalBtt = [
+        '[data-board] button:nth-child(7n):not([value="0"])',
+        '[name="diagonal-btt"]' ]
+
 function createQuerySelectors(button){
-  return [
-    [
+  // 1. Create a variable to hold the query selectors
+  var sequenceQs = [[
       // Row of the clicked cell
       '[data-row="' + button.dataset.row + '"]:not([value="0"])',
       '[name="row-' + button.dataset.row + '"]'
-    ],
-    [
+    ],[
       // Column of the clicked cell
       '[data-column="' + button.dataset.column + '"]:not([value="0"])',
       '[name="column-' + button.dataset.column + '"]'
-    ],
-    [
-      // Query for the 'bottom-left-to-top-right' diagonal
-      '[data-board] button:nth-child(5n + 1):not([value="0"])',
-      '[name="diagonal-ttb"]'
-    ],
-    [
-      // Query for the 'top-left-to-bottom-right' diagonal
-      '[data-board] button:nth-child(7n):not([value="0"])',
-      '[name="diagonal-btt"]'
-    ]
-  ];
+    ]]
+ // 2. Add diagonals if needed
+  var els = document.body.querySelectorAll(diagonalTtb[0])
+  for (let el of els){
+    if (el == button) {
+      sequenceQs.push(diagonalTtb)
+    }
+  }
+
+  els = document.body.querySelectorAll(diagonalBtt[0])
+  for (let el of els){
+    if (el == button) {
+      sequenceQs.push(diagonalBtt)
+    }
+  }
+  // 3. Return the variable
+  return sequenceQs;
 }
 
 
@@ -268,6 +284,12 @@ function fillValue(sequenceQs){
       // Fill the score in the right cell
       var scoreCell = document.querySelector(querySelector[1])
       scoreCell.value = score
+
+      // 10.2 Animation
+      // Determine which direction this sequence is, needed for the animation
+      var direction = (querySelector[0].includes('column')) ? 'column' : 'row'
+      // Add the .animate and .row or .column classes to every element
+      for (var el of sequence.elements) el.classList.add('animate', direction)
     }
   }
 }

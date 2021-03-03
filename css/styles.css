@@ -263,6 +263,37 @@ input[name*=sum]{
     transform: rotate(-45deg);
   }
 
+  /* --- 5.3 Animations ----------------------------------------------------- */
+  @keyframes pop {
+    0%  { transform: scale(1.0) }
+    33% { transform: scale(1.2) }
+    66% { transform: scale(0.9) }
+  }
+
+  .board button.animate{
+    animation: pop .4s
+  }
+
+  .animate.row[data-column="2"],
+  .animate.column[data-row="4"]{
+    animation-delay: .1s!important
+  }
+
+  .animate.row[data-column="3"],
+  .animate.column[data-row="3"]{
+    animation-delay: .2s!important
+  }
+
+  .animate.row[data-column="4"],
+  .animate.column[data-row="2"]{
+    animation-delay: .3s!important
+  }
+
+  .animate.row[data-column="5"],
+  .animate.column[data-row="1"]{
+    animation-delay: .4s!important
+  }
+
 
 /* 6. Dice
 ----------------------------------------------------------------------------- */
