@@ -24,6 +24,11 @@
     ?
   </button>
 
+  <div class=scores>
+    <output aria-label="Your current game score is 0" name=total-score tabindex=0>0</output>
+    <output aria-label="Your high score is 0" name=high-score tabindex=0>0</output>
+  </div>
+
   <div class=board data-board>
 
     <input type=text name=column-1 readonly tabindex=-1>
@@ -81,7 +86,6 @@
     </div>
 
     <input type=text name=diagonal-btt placeholder=x2 readonly tabindex=-1>
-    <input type=text name=score-sum placeholder=Total readonly tabindex=-1>
 
   </div>
 

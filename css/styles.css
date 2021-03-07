@@ -1,3 +1,19 @@
+/*
+
+    TABLE OF CONTENTS
+
+    1. General
+    2. Variables
+    3. Responsiveness
+    4. Scores
+    5. Board
+    6. Game manual
+    7. Input
+    8. Button
+    9. Dice
+
+*/
+
 /* 1. General
 ----------------------------------------------------------------------------- */
 *{
@@ -5,37 +21,18 @@
   padding: 0;
 }
 
-:root{
-  --board-width: 18.75rem;
-  --page-padding: .5rem;
-}
-
-@media screen and (min-width: 720px){
-  :root{
-    --page-padding: 1.5rem;
-  }
-}
-
 html{
-  font: 100% / 1.5 "Avenir", sans-serif;
+  font: 100% / 1.5 'Avenir', sans-serif;
   color: #657371;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f9f9f9;
-  padding-top: 8vw;
   overflow-x: hidden;
 }
 
-@media screen and (min-width: 374px){
-  html{
-    font-size: 112.5%
-  }
-}
-
-@media screen and (min-width: 413px){
-  html{
-    font-size: 125%
-  }
+input{
+  font: inherit;
+  color: inherit;
 }
 
 .visually-hidden{
@@ -52,7 +49,62 @@ html{
 }
 
 
-/* 2. Board
+/* 2. Variables
+----------------------------------------------------------------------------- */
+:root{
+  --board-width: 18.75rem;
+  --page-padding: .5rem;
+}
+
+@media screen and (min-width: 720px){
+  :root{
+    --page-padding: 1.5rem;
+  }
+}
+
+
+/* 3. Responsiveness
+----------------------------------------------------------------------------- */
+@media screen and (min-width: 374px){
+  html{
+    font-size: 112.5%
+  }
+}
+
+@media screen and (min-width: 413px){
+  html{
+    font-size: 125%
+  }
+}
+
+
+/* 4. Scores
+----------------------------------------------------------------------------- */
+.scores{
+  max-width: var(--board-width);
+  margin: 8vh auto 0;
+  text-align: right;
+}
+
+.scores output{
+  display: inline;
+  box-shadow: none;
+  border: none;
+  background-color: transparent;
+  font-family: 'Avenir Heavy', sans-serif;
+  font-size: 3rem;
+}
+
+.scores [name=total-score]{
+  margin-right: .5rem;
+}
+
+.scores output[name=high-score]{
+  opacity: .5;
+}
+
+
+/* 5. Board
 ----------------------------------------------------------------------------- */
 .board{
   max-width: var(--board-width);
@@ -64,20 +116,19 @@ html{
 }
 
 @media screen and (min-width: 50rem){
-  .board{
-    position: absolute;
-    top: calc( 2 * var(--page-padding) );
-    left: calc(50vw - (var(--board-width) / 2));
+  .board,
+  .scores{
     transition: transform .3s ease-out;
   }
 
-  .show-manual .board{
+  .show-manual .board,
+  .show-manual .scores{
     transform: translateX( calc( (-.5 * var(--board-width)) - var(--page-padding) ));
   }
 }
 
 
-/* 3. Game Manual
+/* 6. Game manual
 ----------------------------------------------------------------------------- */
 .game-manual{
   max-width: var(--board-width);
@@ -145,47 +196,36 @@ button.manual-toggle{
 }
 
 
-/* 4. Input
+/* 7. Input
 ----------------------------------------------------------------------------- */
-input{
+.board input{
   max-width: 2rem;
   max-height: 2rem;
   margin: .5rem 0 .5rem .5rem;
   border: none;
 
-  font: inherit;
   font-size: .875rem;
-  color: inherit;
   text-align: center;
 
   background-color: #f0f1f2;
 }
 
-input:not([name*=sum]){
+.board input:not([name*=sum]){
   border-radius: 50%;
   color: #8a8a8a;
   box-shadow: inset 0 1px 2px 0 rgba(0,0,0,.05);
 }
 
-input[name*=diagonal]{
+.board input[name*=diagonal]{
   background-image: linear-gradient(180deg, #caede6 0%, #c5e8e2 100%);
   box-shadow: inset 0 1px 2px 0 rgba(0,0,0,.06);
 }
 
-input[name*=sum]{
-  padding-top: .25rem;
-  padding-bottom: .1875rem;
-  margin-top: 0;
-  border-top: .1875rem double lightgrey;
-  background-color: transparent;
-  font-family: "Avenir Heavy", sans-serif;
-}
 
-
-/* 5. Button
+/* 8. Button
 ----------------------------------------------------------------------------- */
 
-  /* --- 5.1 General -------------------------------------------------------- */
+  /* --- 8.1 General -------------------------------------------------------- */
   button{
     min-width: 3rem;
     min-height: 3rem;
@@ -231,7 +271,7 @@ input[name*=sum]{
     background-image: linear-gradient(180deg, #b8e0d9 0%, #c5e6df 100%);
   }
 
-  /* --- 5.2 Lines ---------------------------------------------------------- */
+  /* --- 8.2 Lines ---------------------------------------------------------- */
   button[data-row="1"]::before,
   button[data-column="4"]::after,
   button[data-row="1"][data-column="5"]::after,
@@ -275,7 +315,7 @@ input[name*=sum]{
     transform: rotate(-45deg);
   }
 
-  /* --- 5.3 Animations ----------------------------------------------------- */
+  /* --- 8.3 Animations ----------------------------------------------------- */
   @keyframes pop {
     0%  { transform: scale(1.0) }
     33% { transform: scale(1.2) }
@@ -307,7 +347,7 @@ input[name*=sum]{
   }
 
 
-/* 6. Dice
+/* 9. Dice
 ----------------------------------------------------------------------------- */
 .dice{
   grid-column: 1 / 6;

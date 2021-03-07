@@ -16,10 +16,12 @@
       - 9.3 Straight
       - 9.4 Two Pair
       - 9.5 Some of a kind
-    10. Calculate and fill in a sequence's value
-    11. Finish the game
-    12. Keyboard controls
-    13. On page load, roll the dice
+    10. Fill in a sequence's value
+    11. Update scores
+    12. Finish the game
+    13. Keyboard controls
+    14. Toggle Manual
+    15. Prepare the board
 
 */
 
@@ -27,11 +29,14 @@
 /* 1. Variables
 ----------------------------------------------------------------------------- */
 let roll = 0,
-    diceSum
+    diceSum,
+    scoreSum,
+    highScore = getStorageItem('highScore', 0)
 
 const diceElements = document.querySelectorAll('.die'),
       diceSumEl = document.querySelector('.dice-sum'),
-      scoreSumEl = document.querySelector('[name=score-sum]'),
+      totalScoreEl = document.querySelector('[name=total-score]'),
+      highScoreEl = document.querySelector('[name=high-score]'),
       buttons = document.querySelectorAll('[data-board] button'),
       boardFields = document.querySelectorAll('[data-board] input'),
       manualToggle = document.querySelector('.manual-toggle'),
@@ -64,6 +69,13 @@ function getRandomNumber(range = [1,6], negative = false){
   let angle = Math.floor(Math.random()*range[1]) + range[0]
   if (negative) angle *= Math.round(Math.random()) ? 1 : -1
   return angle
+}
+
+function getStorageItem(item, defaultValue){
+  // Check if localStorage item exists. If not, create one
+  if (localStorage.getItem(item) == null) localStorage.setItem(item, defaultValue)
+  // Return the item's value
+  return localStorage.getItem(item)
 }
 
 
@@ -191,7 +203,7 @@ function buildSequence(querySelector){
 ----------------------------------------------------------------------------- */
 
   /* --- 9.1 Overall function, returning the score --- */
-  function calculateScore(array){
+  function calculateSequenceScore(array){
     // Sort array from low to high, the logic depends on this order
     array.sort(function(a, b){return a-b})
     // Check for the possible scores, in the right order
@@ -259,7 +271,7 @@ function buildSequence(querySelector){
   }
 
 
-/* 10. Calculate and fill in a sequence's value
+/* 10. Fill in a sequence's value
 ----------------------------------------------------------------------------- */
 function fillSequenceValue(sequenceQs){
   // Check for every sequence if it's entirely filled
@@ -269,13 +281,14 @@ function fillSequenceValue(sequenceQs){
     // If it contains 5 numbers, it's filled. Now calculate the score
     if (sequence.numbers.length == 5){
       // Calculate the score
-      let score = calculateScore(sequence.numbers)
+      let score = calculateSequenceScore(sequence.numbers)
       // If it's the diagonal sequence, double the score
       if(querySelector[1].includes("diagonal")) score *= 2
       // Fill the score in the right cell
       let scoreCell = document.querySelector(querySelector[1])
       scoreCell.value = score
-
+      //
+      updateTotalScore()
       // 10.2 Animation
       // Determine which direction this sequence is, needed for the animation
       let direction = (querySelector[0].includes('column')) ? 'column' : 'row'
@@ -286,19 +299,35 @@ function fillSequenceValue(sequenceQs){
 }
 
 
-/* 11. Finish the game
+/* 11. Update scores
 ----------------------------------------------------------------------------- */
-function finishGame(){
+function updateTotalScore(){
   // Reset score to zero
-  let scoreSum = 0
+  scoreSum = 0
   // Add up all values of the fields
   for (let field of boardFields) scoreSum += Number(field.value)
   // Add the sum tot the field
-  scoreSumEl.value = scoreSum
+  totalScoreEl.value = scoreSum
+  totalScoreEl.setAttribute('aria-label', 'Your current game score is ' + scoreSum)
+}
+
+function updateHighScore(score){
+  highScore = score
+  localStorage.setItem('highScore', highScore)
+  highScoreEl.value = highScore
+  highScoreEl.setAttribute('aria-label', 'Your high score is ' + highScore)
 }
 
 
-/* 12. Keyboard controls
+/* 12. Finish the game
+----------------------------------------------------------------------------- */
+function finishGame(){
+  // Check if total score is higher than the high score
+  if (scoreSum > highScore) updateHighScore(scoreSum)
+}
+
+
+/* 13. Keyboard controls
 ----------------------------------------------------------------------------- */
 function moveFocus(e){
   // Check if the arrow keys have been hit
@@ -330,7 +359,7 @@ function moveFocus(e){
 }
 
 
-/* 13. Toggle Manual
+/* 14. Toggle Manual
 ----------------------------------------------------------------------------- */
 function toggleManual(e) {
   // Toggle the CSS class on the body element
@@ -342,16 +371,18 @@ function toggleManual(e) {
   localStorage.setItem('manual', currentState)
 }
 
-// Check if localStorage item exists. If not, create one
-if (localStorage.getItem('manual') == null) localStorage.setItem('manual', 'open')
-
-// Retreive manual state from localStorage
-let manualState = localStorage.getItem('manual')
-
 // Close manual if needed
-if (manualState == 'closed') toggleManual()
+if (getStorageItem('manual', 'open') == 'closed') toggleManual()
 
 
-/* 14. On page load, roll the dice
+/* 15. Prepare the board
 ----------------------------------------------------------------------------- */
+function prepareBoard(){
+  // Retreive the high score from localStorage and update the field
+  updateHighScore(highScore)
+  // TODO: after every board button click, remember the gameState and retrieve
+  // it from localStorage on page load to then fill in
+}
+
+prepareBoard()
 rollDice()
