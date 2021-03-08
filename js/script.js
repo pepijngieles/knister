@@ -8,15 +8,15 @@
     4. Define logic for rolling the dice
     5. Handle clicks on the board's buttons
     6. Update a button's attributes
-    7. Build a set of query selectors for the sequences and score fields
-    8. Build a sequence of cell values from a querySelector
-    9. Calculate a sequence's score
+    7. Build a set of query selectors for the sets and score fields
+    8. Build a set of cell values from a querySelector
+    9. Calculate a set's score
       - 9.1 Overall function, returning the score
       - 9.2 Full house
       - 9.3 Straight
       - 9.4 Two Pair
       - 9.5 Some of a kind
-    10. Fill in a sequence's value
+    10. Fill in a set's value
     11. Update scores
     12. Finish the game
     13. Keyboard controls
@@ -118,9 +118,9 @@ function handleButtonClick(){
   for (let el of buttons) el.classList.remove('animate', 'row', 'column')
   // Create query selectors needed to check if corresponding rows, columns
   // and diagonals are entirely filled
-  let sequenceQs = buildQuerySelectors(this)
+  let setQs = buildQuerySelectors(this)
   // Calculate and fill the value with the query selectors
-  fillSequenceValue(sequenceQs)
+  fillSetValue(setQs)
   // Keep track of the amount of rolls
   roll++
   // Check if the game is finished
@@ -144,7 +144,7 @@ function updateButtonAttributes(button){
 }
 
 
-/* 7. Build a set of query selectors for the sequences and score fields
+/* 7. Build a set of query selectors for the sets and score fields
 ----------------------------------------------------------------------------- */
 // 1. Create constant variables for the diagonal query selectors
       // Query for the 'bottom-left-to-top-right' diagonal
@@ -158,7 +158,7 @@ const diagonalTtb = [
 
 function buildQuerySelectors(button){
   // 2. Create a variable to hold the query selectors
-  let sequenceQs = [[
+  let setQs = [[
       // Row of the clicked cell
       '[data-row="' + button.dataset.row + '"]:not([value="0"])',
       '[name="row-' + button.dataset.row + '"]'
@@ -171,39 +171,39 @@ function buildQuerySelectors(button){
   let els = document.body.querySelectorAll(diagonalTtb[0])
   for (let el of els){
     if (el == button) {
-      sequenceQs.push(diagonalTtb)
+      setQs.push(diagonalTtb)
     }
   }
 
   els = document.body.querySelectorAll(diagonalBtt[0])
   for (let el of els){
     if (el == button) {
-      sequenceQs.push(diagonalBtt)
+      setQs.push(diagonalBtt)
     }
   }
   // 4. Return the variable
-  return sequenceQs;
+  return setQs;
 }
 
 
-/* 8. Build a sequence of cell values from a querySelector
+/* 8. Build a set of cell values from a querySelector
 ----------------------------------------------------------------------------- */
-function buildSequence(querySelector){
+function buildSet(querySelector){
   // .1. Get the needed cells with the query selectors
   let cells = document.querySelectorAll(querySelector[0])
-  let sequence = new Array()
+  let set = new Array()
   // 2. Put every cell's value in an array
-  for (let cell of cells) sequence.push(parseInt(cell.value))
+  for (let cell of cells) set.push(parseInt(cell.value))
   // 3. If it contains 5 numbers, it's entirely filled
-  return { 'numbers': sequence, 'elements': cells }
+  return { 'numbers': set, 'elements': cells }
 }
 
 
-/* 9. Calculate a sequence's score
+/* 9. Calculate a set's score
 ----------------------------------------------------------------------------- */
 
   /* --- 9.1 Overall function, returning the score --- */
-  function calculateSequenceScore(array){
+  function calculateSetScore(array){
     // Sort array from low to high, the logic depends on this order
     array.sort(function(a, b){return a-b})
     // Check for the possible scores, in the right order
@@ -271,18 +271,18 @@ function buildSequence(querySelector){
   }
 
 
-/* 10. Fill in a sequence's value
+/* 10. Fill in a set's value
 ----------------------------------------------------------------------------- */
-function fillSequenceValue(sequenceQs){
-  // Check for every sequence if it's entirely filled
-  for (let querySelector of sequenceQs){
-    // Get the sequence
-    let sequence = buildSequence(querySelector)
+function fillSetValue(setQs){
+  // Check for every set if it's entirely filled
+  for (let querySelector of setQs){
+    // Get the set
+    let set = buildSet(querySelector)
     // If it contains 5 numbers, it's filled. Now calculate the score
-    if (sequence.numbers.length == 5){
+    if (set.numbers.length == 5){
       // Calculate the score
-      let score = calculateSequenceScore(sequence.numbers)
-      // If it's the diagonal sequence, double the score
+      let score = calculateSetScore(set.numbers)
+      // If it's the diagonal set, double the score
       if(querySelector[1].includes("diagonal")) score *= 2
       // Fill the score in the right cell
       let scoreCell = document.querySelector(querySelector[1])
@@ -290,10 +290,10 @@ function fillSequenceValue(sequenceQs){
       //
       updateTotalScore()
       // 10.2 Animation
-      // Determine which direction this sequence is, needed for the animation
+      // Determine which direction this set is, needed for the animation
       let direction = (querySelector[0].includes('column')) ? 'column' : 'row'
       // Add the .animate and .row or .column classes to every element
-      for (let el of sequence.elements) el.classList.add('animate', direction)
+      for (let el of set.elements) el.classList.add('animate', direction)
     }
   }
 }
