@@ -2,8 +2,8 @@
 
     TABLE OF CONTENTS
 
-    1. General
-    2. Variables
+    1. Variables
+    2. General
     3. Responsiveness
     4. Scores
     5. Board
@@ -14,7 +14,75 @@
 
 */
 
-/* 1. General
+
+/* 1. Variables
+----------------------------------------------------------------------------- */
+:root{
+  --board-width: 18.75rem;
+  --page-padding: .5rem;
+
+  --pri-bg-color: #f9f9f9;
+  --sec-bg-color: #f0f1f2;
+  --accent-bg-color: #C7EBE4;
+
+  --pri-txt-color: #5D6362;
+  --sec-txt-color: #868D8C;
+  --ter-txt-color: #BBC1C0;
+
+  --border-default: #e3e5e6;
+  --border-subtle: #eeeeee;
+  --border-accent: #ceebe5;
+
+  --button-default: linear-gradient(0deg, #ebeef0 0%, #f0f1f2 100%);
+  --button-default-pressed: linear-gradient(0deg, #f0f1f2 0%, #ebeef0 100%);
+  --button-accent: linear-gradient(180deg, #c5e6df 0%, #b8e0d9 100%);
+  --button-accent-pressed: linear-gradient(180deg, #b8e0d9 0%, #c5e6df 100%);
+  --button-glow: #fcfcfc;
+
+  --dice-hue: 32;
+  --dice-saturation: 48%;
+  --dice-lightness: 90%;
+}
+
+@media screen and (min-width: 720px){
+  :root{
+    --page-padding: 1.5rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+
+  :root{
+    --pri-bg-color: #143b4f;
+    --sec-bg-color: #17455c;
+    --accent-bg-color: #264E56;
+
+    --pri-txt-color: rgba(247,247,247,.95);
+    --sec-txt-color: rgba(247,247,247,.8);
+    --ter-txt-color: rgba(247,247,247,.5);
+
+    --border-default: #395f74;
+    --border-subtle: #325466;
+    --border-accent: #3c6358;
+
+    --button-default: linear-gradient(180deg, #2d4e60 0%, #2b4b5c 100%);
+    --button-default-pressed: linear-gradient(180deg, #2b4b5c 0%, #2d4e60 100%);
+    --button-accent: linear-gradient(180deg, #538a7a 0%, #4d8071 100%);
+    --button-accent-pressed: linear-gradient(180deg, #4d8071 0%, #538a7a 100%);
+    --button-glow: rgba(249,251,252,.05);
+
+    --dice-saturation: 32%;
+    --dice-lightness: 72%;
+  }
+
+  *:focus{
+    outline: 3px solid var(--pri-txt-color);
+  }
+
+}
+
+
+/* 2. General
 ----------------------------------------------------------------------------- */
 *{
   margin: 0;
@@ -23,11 +91,15 @@
 
 html{
   font: 100% / 1.5 'Avenir', sans-serif;
-  color: #657371;
+  color: var(--sec-txt-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f9f9f9;
+  background-color: var(--pri-bg-color);
   overflow-x: hidden;
+}
+
+h1,h2,h3{
+  color: var(--pri-txt-color);
 }
 
 input{
@@ -46,20 +118,6 @@ input{
   position: absolute !important;
   width: 1px !important;
   white-space: nowrap !important;
-}
-
-
-/* 2. Variables
------------------------------------------------------------------------------ */
-:root{
-  --board-width: 18.75rem;
-  --page-padding: .5rem;
-}
-
-@media screen and (min-width: 720px){
-  :root{
-    --page-padding: 1.5rem;
-  }
 }
 
 
@@ -100,7 +158,7 @@ input{
 }
 
 .scores output[name=high-score]{
-  opacity: .5;
+  color: var(--ter-txt-color);
 }
 
 
@@ -187,7 +245,7 @@ button.manual-toggle{
 
 .game-manual dt:not(:last-of-type),
 .game-manual dd:not(:last-of-type){
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .game-manual dd{
@@ -207,18 +265,22 @@ button.manual-toggle{
   font-size: .875rem;
   text-align: center;
 
-  background-color: #f0f1f2;
+  background-color: var(--sec-bg-color);
 }
 
 .board input:not([name*=sum]){
   border-radius: 50%;
-  color: #8a8a8a;
+  color: var(--ter-txt-color);
   box-shadow: inset 0 1px 2px 0 rgba(0,0,0,.05);
 }
 
 .board input[name*=diagonal]{
-  background-image: linear-gradient(180deg, #caede6 0%, #c5e8e2 100%);
+  background: var(--accent-bg-color);
   box-shadow: inset 0 1px 2px 0 rgba(0,0,0,.06);
+}
+
+.board input::placeholder{
+  color: var(--ter-txt-color);
 }
 
 
@@ -232,14 +294,14 @@ button.manual-toggle{
     position: relative; /* to absolutely position the ::after element */
     border: none;
     border-radius: 0.15625rem;
-    background-color: #f7f7f7;
-    background-image: linear-gradient(0deg, #ebeef0 0%, #f0f1f2 100%);
+    background-color: var(--sec-bg-color);
+    background-image: var(--button-default);
 
     font: inherit;
     font-size: 1.125rem;
     color: inherit;
     box-shadow:
-      0 -1px 0 0 #fcfcfc,
+      inset 0 1px 0 0 var(--button-glow),
       inset 0 -1px 2px 0 rgba(0,0,0,.05);
   }
 
@@ -249,9 +311,9 @@ button.manual-toggle{
 
   button[readonly],
   .show-manual .manual-toggle{
-    background-image: linear-gradient(0deg, #f0f1f2 0%, #ebeef0 100%);
+    background-image: var(--button-default-pressed);
     box-shadow:
-      0 1px 0 0 #fcfcfc,
+      inset 0 -1px 0 0 var(--button-glow),
       inset 0 2px 2px 0 rgba(0,0,0,.03);
   }
 
@@ -262,13 +324,13 @@ button.manual-toggle{
   .board button:nth-child(5n + 1),
   .board button:nth-child(7n),
   .manual-toggle{
-    background-image: linear-gradient(180deg, #c5e6df 0%, #b8e0d9 100%);
+    background-image: var(--button-accent);
   }
 
   .board button[readonly]:nth-child(5n + 1),
   .board button[readonly]:nth-child(7n),
   .show-manual .manual-toggle{
-    background-image: linear-gradient(180deg, #b8e0d9 0%, #c5e6df 100%);
+    background-image: var(--button-accent-pressed);
   }
 
   /* --- 8.2 Lines ---------------------------------------------------------- */
@@ -280,7 +342,7 @@ button.manual-toggle{
     display: block;
     position: absolute;
     z-index: -1;
-    background-color: #e3e5e6;
+    background-color: var(--border-default);
   }
 
   button[data-row="1"]::before{
@@ -302,7 +364,7 @@ button.manual-toggle{
     width: 1px;
     height: calc(1.5rem + 1px);
     right: calc(-.5rem - 1px);
-    background-color: #ceebe5;
+    background-color: var(--border-accent);
   }
 
   button[data-row="1"][data-column="5"]::after{
@@ -363,12 +425,21 @@ button.manual-toggle{
   border-radius: .5rem;
   margin: .85rem;
   text-align: center;
-  background-image: linear-gradient(0deg, #f5f0eb 0%, #faf8f5 100%);
+  /*background-image: linear-gradient(0deg, #f5f0eb 0%, #faf8f5 100%);*/
+  background-image:
+    linear-gradient(
+      -45deg,
+      hsl(var(--dice-hue), calc(var(--dice-saturation) - 20%), calc(var(--dice-lightness) - 12%)) 0%,
+      hsl(var(--dice-hue), var(--dice-saturation), var(--dice-lightness)) 100%);
   background-color: #fff8f0;
-  box-shadow:
+  /*box-shadow:
     .0625rem .125rem .1875rem 0 rgba(0,0,0,.03),
     .125rem .25rem .375rem 0 rgba(0,0,0,.05),
-    .25rem .5rem .75rem 0 rgba(0,0,0,.1);
+    .25rem .5rem .75rem 0 rgba(0,0,0,.1);*/
+  box-shadow:
+    1px 2px 3px 0 rgba(0,0,0,0.03),
+    2px 4px 3px 0 rgba(0,0,0,0.05),
+    4px 8px 12px 0 rgba(0,0,0,0.10);
   transition:
     transform .12s,
     opacity .12s;
@@ -391,10 +462,21 @@ button.manual-toggle{
   height: 3rem;
   margin: .125rem;
   border-radius: 50%;
-  box-shadow:
+  /*box-shadow:
     .0625rem .0625rem .125rem 0 #ffffff,
-    .125rem .125rem .375rem 0 rgba(0,0,0,0.02);
-  background: #fffaf7 url(../images/dice.svg) no-repeat center left;
+    .125rem .125rem .375rem 0 rgba(0,0,0,0.02);*/
+  box-shadow:
+    -.5px -.5px .5px .5px rgba(255,255,255,0.2),
+    3px 3px 6px 0 rgba(0,0,0,0.02),
+    inset .5px .5px .5px .5px rgba(0,0,0,0.02),
+    inset .5px .5px .5px .5px rgba(255,255,255,0.3),
+    inset 8px 8px 12px 0 rgba(0,0,0,0.02),
+    inset -.5px -.5px .5px .5px rgba(0,0,0,0.04);
+  /*background: #fffaf7 url(../images/dice.svg) no-repeat center left;*/
+  background-color: hsl(var(--dice-hue), var(--dice-saturation), var(--dice-lightness));
+  background-image: url(../images/dice.svg);
+  background-repeat: no-repeat;
+  background-position: center left;
   background-size: 18rem;
 }
 
