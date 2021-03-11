@@ -190,7 +190,7 @@ input{
 ----------------------------------------------------------------------------- */
 .game-manual{
   max-width: var(--board-width);
-  margin: 0 auto;
+  margin: 0 auto calc(4 * var(--page-padding));
   cursor: default;
 }
 
