@@ -34,12 +34,12 @@ let roll = 0,
     highScore = getStorageItem('highScore', 0)
 
 const diceElements = document.querySelectorAll('.die'),
-      diceSumEl = document.querySelector('.dice-sum'),
       totalScoreEl = document.querySelector('[name=total-score]'),
       highScoreEl = document.querySelector('[name=high-score]'),
-      buttons = document.querySelectorAll('[data-board] button'),
-      boardFields = document.querySelectorAll('[data-board] input'),
-      manualToggle = document.querySelector('.manual-toggle'),
+      buttons = document.querySelectorAll('[data-el=board] button'),
+      boardFields = document.querySelectorAll('[data-el=board] input'),
+      manualToggle = document.querySelector('[data-el=manual-toggle]'),
+      manualEl = document.querySelector('[data-el=manual]'),
       liveRegion = document.querySelector('[aria-live]'),
       scores = {
         '2-oak': '1',
@@ -149,11 +149,11 @@ function updateButtonAttributes(button){
 // 1. Create constant variables for the diagonal query selectors
       // Query for the 'bottom-left-to-top-right' diagonal
 const diagonalTtb = [    
-        '[data-board] button:nth-child(5n + 1):not([value="0"])',
+        '[data-el=board] button:nth-child(5n + 1):not([value="0"])',
         '[name="diagonal-ttb"]' ],
       // Query for the 'top-left-to-bottom-right' diagonal
       diagonalBtt = [
-        '[data-board] button:nth-child(7n):not([value="0"])',
+        '[data-el=board] button:nth-child(7n):not([value="0"])',
         '[name="diagonal-btt"]' ]
 
 function buildQuerySelectors(button){
@@ -369,6 +369,8 @@ function toggleManual(e) {
   let currentState = (manualOpened) ? 'open' : 'closed'
   // Store it in localStorage
   localStorage.setItem('manual', currentState)
+  // Put focus on the manual element
+  if (currentState == 'open') manualEl.focus()
 }
 
 // Close manual if needed

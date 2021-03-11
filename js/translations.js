@@ -15,8 +15,8 @@ const translations = [
     'cmb-i2': 'Twee tweelingen',
     'cmb-i3': 'Drieling',
     'cmb-i4': 'Vierling',
-    'cmb-i5': 'Full House',
-    'cmb-i6': 'Straat',
+    'cmb-i5': 'Full House <small>(tweeling & drieling)</small>',
+    'cmb-i6': 'Straat <small>(vijf opeenvolgende getallen)',
     'cmb-i7': 'Vijfling',
     'cmb-i8': 'Straat zonder 7',
   }
@@ -25,7 +25,7 @@ const translations = [
 // Retreive the user's system language
 const userLanguage = navigator.language || navigator.userLanguage
 // If it's not English, start translation
-if (!userLanguage.includes('en')) translate()
+if (userLanguage.includes('en')) translate()
 
 function translate(){
   // Retreive all elements that need translation
@@ -33,7 +33,9 @@ function translate(){
   // Check the javascript object to find the right language
   for (var translation of translations){
     // If there's a match on language code
-    if (translation['codes'].includes(userLanguage)) {
+    if (translation['codes'].includes('nl')) {
+      // Change the language attribute on the html tag
+      document.documentElement.lang = translation['codes'][0];
       // Loop through every element
       for (var element of translatableElements){
         // And replace the content with its translation

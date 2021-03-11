@@ -19,7 +19,7 @@
 </head>
 <body class=show-manual>
 
-  <button class=manual-toggle aria-pressed=true>
+  <button class=manual-toggle data-el=manual-toggle  aria-pressed=true>
     <span class=visually-hidden>Toggle Manual</span>
     ?
   </button>
@@ -29,7 +29,7 @@
     <output aria-label="Your high score is 0" name=high-score tabindex=0>0</output>
   </div>
 
-  <div class=board data-board>
+  <div class=board data-el=board>
 
     <input type=text name=column-1 readonly tabindex=-1>
     <input type=text name=column-2 readonly tabindex=-1>
@@ -89,18 +89,18 @@
 
   </div>
 
-  <aside class=game-manual>
+  <aside class=game-manual data-el=manual tabindex=-1>
     <h2 data-t=hiw-t>How it works</h2>
     <p data-t=hiw-p>After each die roll, add the sum in a field by clicking on it. Points are awarded for combinations made in the rows, columns and diagonals. Numbers may be in any order, diagonals will be doubled. After 25 die rolls, when the grid is filled, your total score will be calculated.</p>
     <dl>
-      <dt data-t=cmb-i1>One Pair</dt> <dd>1</dd>
-      <dt data-t=cmb-i2>Two Pair</dt> <dd>3</dd>
-      <dt data-t=cmb-i3>Three of a Kind</dt> <dd>3</dd>
-      <dt data-t=cmb-i4>Four of a Kind</dt> <dd>6</dd>
-      <dt data-t=cmb-i5>Full House</dt> <dd>8</dd>
-      <dt data-t=cmb-i6>Straight</dt> <dd>8</dd>
-      <dt data-t=cmb-i7>Five of a Kind</dt> <dd>10</dd>
-      <dt data-t=cmb-i8>Straight without 7</dt> <dd>12</dd>
+      <dt data-t=cmb-i1>2 of a Kind</dt> <dd>1</dd>
+      <dt data-t=cmb-i3>3 of a Kind</dt> <dd>3</dd>
+      <dt data-t=cmb-i4>4 of a Kind</dt> <dd>6</dd>
+      <dt data-t=cmb-i7>5 of a Kind</dt> <dd>10</dd>
+      <dt data-t=cmb-i2>Twice 2 of a Kind</dt> <dd>3</dd>
+      <dt data-t=cmb-i5>Full House <small>(two and three of a kind)</small></dt> <dd>8</dd>
+      <dt data-t=cmb-i6>Straight <small>(five sequential numbers)</small></dt> <dd>8</dd>
+      <dt data-t=cmb-i8>Straight without a 7</dt> <dd>12</dd>
     </dl>
 
     <a href=https://nsv.de/nsvspielttv/knister_video/></a>

@@ -61,9 +61,9 @@
     --sec-txt-color: rgba(247,247,247,.8);
     --ter-txt-color: rgba(247,247,247,.5);
 
-    --border-default: #395f74;
+    --border-default: #2d4b5c;
     --border-subtle: #325466;
-    --border-accent: #3c6358;
+    --border-accent: #304f46;
 
     --button-default: linear-gradient(180deg, #2d4e60 0%, #2b4b5c 100%);
     --button-default-pressed: linear-gradient(180deg, #2b4b5c 0%, #2d4e60 100%);
@@ -71,8 +71,8 @@
     --button-accent-pressed: linear-gradient(180deg, #4d8071 0%, #538a7a 100%);
     --button-glow: rgba(249,251,252,.05);
 
-    --dice-saturation: 32%;
-    --dice-lightness: 72%;
+    --dice-saturation: 0%;
+    --dice-lightness: 80%;
   }
 
   *:focus{
