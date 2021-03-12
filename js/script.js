@@ -109,9 +109,6 @@ function rollDice(){
 /* 5. Handle clicks on the board's buttons
 ----------------------------------------------------------------------------- */
 function handleButtonClick(){
-  // Don't allow clicks on already filled buttons
-  // Using [readonly] because [disabled] won't allow :focus
-  if (this.getAttribute('readonly')) return
   // Update the button's attributes
   updateButtonAttributes(this)
   // Reset the animation classes for every button

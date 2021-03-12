@@ -311,6 +311,7 @@ button.manual-toggle{
 
   button[readonly],
   .show-manual .manual-toggle{
+    pointer-events: none;
     background-image: var(--button-default-pressed);
     box-shadow:
       inset 0 -1px 0 0 var(--button-glow),
