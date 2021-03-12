@@ -25,7 +25,7 @@ const translations = [
 // Retreive the user's system language
 const userLanguage = navigator.language || navigator.userLanguage
 // If it's not English, start translation
-if (userLanguage.includes('en')) translate()
+if (!userLanguage.includes('en')) translate()
 
 function translate(){
   // Retreive all elements that need translation
@@ -33,7 +33,7 @@ function translate(){
   // Check the javascript object to find the right language
   for (var translation of translations){
     // If there's a match on language code
-    if (translation['codes'].includes('nl')) {
+    if (translation['codes'].includes(userLanguage)) {
       // Change the language attribute on the html tag
       document.documentElement.lang = translation['codes'][0];
       // Loop through every element
