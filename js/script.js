@@ -367,7 +367,7 @@ function toggleManual(e) {
   // Store it in localStorage
   localStorage.setItem('manual', currentState)
   // Put focus on the manual element
-  if (currentState == 'open') manualEl.focus()
+  // if (currentState == 'open') manualEl.focus()
 }
 
 // Close manual if needed
