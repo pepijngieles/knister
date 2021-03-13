@@ -461,18 +461,20 @@ button.manual-toggle{
   display: block;
   width: 3rem;
   height: 3rem;
-  margin: .125rem;
+  margin: .1875rem;
   border-radius: 50%;
   /*box-shadow:
     .0625rem .0625rem .125rem 0 #ffffff,
     .125rem .125rem .375rem 0 rgba(0,0,0,0.02);*/
   box-shadow:
-    -.5px -.5px .5px .5px rgba(255,255,255,0.2),
-    3px 3px 6px 0 rgba(0,0,0,0.02),
-    inset .5px .5px .5px .5px rgba(0,0,0,0.02),
-    inset .5px .5px .5px .5px rgba(255,255,255,0.3),
-    inset 8px 8px 12px 0 rgba(0,0,0,0.02),
-    inset -.5px -.5px .5px .5px rgba(0,0,0,0.04);
+    1px 1px 2px 1px rgba(255,255,255,0.1),
+    -1px -1px 2px 1px rgba(255,255,255,0.2),
+    1px 1px 4px 0 rgba(0,0,0,0.01),
+    3px 3px 6px 0 rgba(0,0,0,0.04),
+    inset 1px 1px 2px 0 rgba(0,0,0,0.02),
+    inset 1px 1px 2px 0 rgba(255,255,255,0.2),
+    inset 8px 8px 12px 0 rgba(0,0,0,0.03),
+    inset -1px -1px 2px 0  rgba(255,255,255,0.02);
   /*background: #fffaf7 url(../images/dice.svg) no-repeat center left;*/
   background-color: hsl(var(--dice-hue), var(--dice-saturation), var(--dice-lightness));
   background-image: url(../images/dice.svg);
