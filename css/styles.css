@@ -84,22 +84,22 @@
 
 /* 2. General
 ----------------------------------------------------------------------------- */
-*{
-  margin: 0;
-  padding: 0;
-}
-
 html{
   font: 100% / 1.5 'Avenir', sans-serif;
-  color: var(--sec-txt-color);
+  color: var(--pri-txt-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--pri-bg-color);
   overflow-x: hidden;
+  box-sizing: border-box;
 }
 
-h1,h2,h3{
-  color: var(--pri-txt-color);
+*,
+*:before,
+*:after{
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
 }
 
 input{
@@ -118,6 +118,15 @@ input{
   position: absolute !important;
   width: 1px !important;
   white-space: nowrap !important;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+  *, * ::before, * ::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 
@@ -155,6 +164,7 @@ input{
 
 .scores [name=total-score]{
   margin-right: .5rem;
+  color: var(--sec-txt-color);
 }
 
 .scores output[name=high-score]{
