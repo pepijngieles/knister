@@ -405,23 +405,29 @@ rollDice()
 
 /* 16. Translate the interface
 ----------------------------------------------------------------------------- */
-// 1. Retreive the user's system language
-const userLanguage = navigator.language || navigator.userLanguage
-// 2. If it's not English, start translation
+// 1. Retreive the device's system language
+const systemLanguage = navigator.language || navigator.systemLanguage
+// 2. Check if there's a user preference for the language setting
+let userLanguage = getStorageItem('language', systemLanguage)
+// 3. If there's a preference other than English, translate the UI
 if (!userLanguage.includes('en')) translate(userLanguage)
 
 function translate(langCode){
-  // 3. Retreive all elements that need translation
+  // 4. Retreive all elements that need translation
   const translatableElements = document.querySelectorAll('[data-t]')
-  // 4. Check the javascript object to find the right language
+  // 5. Check the javascript object to find the right language
   for (var translation of translations){
-    // 5. If there's a match on language code
+    // 6. If there's a match on language code
     if (translation['codes'].includes(langCode)) {
-      // 6. Change the language attribute on the html tag
+      // 7. Store the language preference
+      localStorage.setItem('language', langCode)
+      // 8. Change the language attribute on the html tag
       document.documentElement.lang = translation['codes'][0];
-      // 7. Loop through every element
+      // 9. Update the select value in the settings dialog
+      document.forms['settings']['language'].value = langCode;
+      // 10. Loop through every element
       for (var element of translatableElements){
-        // 8. And replace the content with its translation
+        // 11. And replace the content with its translation
         element.innerHTML = translation[element.getAttribute('data-t')]
       }
     }
