@@ -1,8 +1,29 @@
 /* Translation
 ----------------------------------------------------------------------------- */
-
-// Create variable that holds all translations
 const translations = [
+  {
+    'codes': ['en',],
+    'title': 'Knister',
+    'description': 'Knister is a dice game designed by Heinz Wüppen where you get points by making Yhatzee-like combinations in a 5x5 grid.',
+    'manual-button': 'Show Manual',
+    'hiw-t': 'How it works',
+    'hiw-p': 'After each die roll, add the sum in a field by clicking on it. Points are awarded for combinations made in the rows, columns and diagonals. Numbers may be in any order, diagonals will be doubled. After 25 die rolls, when the grid is filled, your total score will be calculated.',
+    'cmb-t': 'Combinaties',
+    'cmb-i1': '2 of a Kind',
+    'cmb-i2': 'Twice 2 of a Kind',
+    'cmb-i3': '3 of a Kind',
+    'cmb-i4': '4 of a Kind',
+    'cmb-i5': 'Full House <small>(two and three of a kind)</small>',
+    'cmb-i6': 'Straight <small>(five sequential numbers)</small>',
+    'cmb-i7': '5 of a Kind',
+    'cmb-i8': 'Straight without a 7',
+    'settings': 'Settings',
+    'language': 'Language',
+    'theme': 'Theme',
+    'light': 'Light',
+    'system': 'System',
+    'dark': 'Dark'
+  },
   {
     'codes': ['nl', 'nl-BE'],
     'title': 'Knister',
@@ -19,28 +40,11 @@ const translations = [
     'cmb-i6': 'Straat <small>(vijf opeenvolgende getallen)',
     'cmb-i7': 'Vijfling',
     'cmb-i8': 'Straat zonder 7',
+    'settings': 'Instellingen',
+    'language': 'Taal',
+    'theme': 'Weergave',
+    'light': 'Licht',
+    'system': 'Systeem',
+    'dark': 'Donker'
   }
 ]
-
-// Retreive the user's system language
-const userLanguage = navigator.language || navigator.userLanguage
-// If it's not English, start translation
-if (!userLanguage.includes('en')) translate()
-
-function translate(){
-  // Retreive all elements that need translation
-  const translatableElements = document.querySelectorAll('[data-t]')
-  // Check the javascript object to find the right language
-  for (var translation of translations){
-    // If there's a match on language code
-    if (translation['codes'].includes(userLanguage)) {
-      // Change the language attribute on the html tag
-      document.documentElement.lang = translation['codes'][0];
-      // Loop through every element
-      for (var element of translatableElements){
-        // And replace the content with its translation
-        element.innerHTML = translation[element.getAttribute('data-t')];
-      }
-    }
-  }
-}

@@ -2,7 +2,7 @@
 
     TABLE OF CONTENTS
 
-    1. Variables
+    1. Custom properties
     2. General
     3. Responsiveness
     4. Scores
@@ -15,71 +15,81 @@
 */
 
 
-/* 1. Variables
+/* 1. Custom properties
 ----------------------------------------------------------------------------- */
-:root{
-  --board-width: 18.75rem;
-  --page-padding: .5rem;
 
-  --pri-bg-color: #f9f9f9;
-  --sec-bg-color: #f0f1f2;
-  --accent-bg-color: #C7EBE4;
-
-  --pri-txt-color: #5D6362;
-  --sec-txt-color: #868D8C;
-  --ter-txt-color: #BBC1C0;
-
-  --border-default: #e3e5e6;
-  --border-subtle: #eeeeee;
-  --border-accent: #ceebe5;
-
-  --button-default: linear-gradient(0deg, #ebeef0 0%, #f0f1f2 100%);
-  --button-default-pressed: linear-gradient(0deg, #f0f1f2 0%, #ebeef0 100%);
-  --button-accent: linear-gradient(180deg, #c5e6df 0%, #b8e0d9 100%);
-  --button-accent-pressed: linear-gradient(180deg, #b8e0d9 0%, #c5e6df 100%);
-  --button-glow: #fcfcfc;
-
-  --dice-hue: 32;
-  --dice-saturation: 48%;
-  --dice-lightness: 90%;
-}
-
-@media screen and (min-width: 720px){
+  /* --- 1.1 General -------------------------------------------------------- */
   :root{
-    --page-padding: 1.5rem;
+    --board-width: 18.75rem;
+    --page-padding: .5rem;
   }
-}
 
-@media (prefers-color-scheme: dark) {
+  @media screen and (min-width: 720px){
+    :root{
+      --page-padding: 1.5rem;
+    }
+  }
 
+  /* --- 1.2 Dark mode logic ------------------------------------------------ */
+  :root {
+    --ON: initial;
+    --OFF: ;
+  }
+
+  .theme-system,
+  .theme-light {
+    --light: var(--ON);
+    --dark: var(--OFF);
+  }
+
+  .theme-dark {
+    --light: var(--OFF);
+    --dark: var(--ON);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .theme-system,
+    .theme-dark {
+      --light: var(--OFF);
+      --dark: var(--ON);
+    }
+  }
+
+  /* --- 1.3 Dark mode colors ----------------------------------------------- */
   :root{
-    --pri-bg-color: #143b4f;
-    --sec-bg-color: #17455c;
-    --accent-bg-color: #264E56;
+    --pri-bg-color:    var(--light, #f9f9f9) var(--dark, #143b4f);
+    --sec-bg-color:    var(--light, #f0f1f2) var(--dark, #17455c);
+    --accent-bg-color: var(--light, #C7EBE4) var(--dark, #264E56);
 
-    --pri-txt-color: rgba(247,247,247,.95);
-    --sec-txt-color: rgba(247,247,247,.8);
-    --ter-txt-color: rgba(247,247,247,.5);
+    --pri-txt-color:   var(--light, #5D6362) var(--dark, rgba(247,247,247,.95));
+    --sec-txt-color:   var(--light, #868D8C) var(--dark, rgba(247,247,247,.8));
+    --ter-txt-color:   var(--light, #BBC1C0) var(--dark, rgba(247,247,247,.5));
 
-    --border-default: #2d4b5c;
-    --border-subtle: #325466;
-    --border-accent: #304f46;
+    --border-default:  var(--light, #e3e5e6) var(--dark, #2d4b5c);
+    --border-subtle:   var(--light, #eeeeee) var(--dark, #325466);
+    --border-accent:   var(--light, #ceebe5) var(--dark, #304f46);
 
-    --button-default: linear-gradient(180deg, #2d4e60 0%, #2b4b5c 100%);
-    --button-default-pressed: linear-gradient(180deg, #2b4b5c 0%, #2d4e60 100%);
-    --button-accent: linear-gradient(180deg, #538a7a 0%, #4d8071 100%);
-    --button-accent-pressed: linear-gradient(180deg, #4d8071 0%, #538a7a 100%);
-    --button-glow: rgba(249,251,252,.05);
+    --button-default:
+      var(--light, linear-gradient(0deg, #ebeef0 0%, #f0f1f2 100%))
+      /*var(--dark, linear-gradient(180deg, #2d4e60 0%, #2b4b5c 100%))*/
+      var(--dark, linear-gradient(180deg, #264f66 0%, #23495e 100%));
+    --button-default-pressed:
+      var(--light, linear-gradient(0deg, #f0f1f2 0%, #ebeef0 100%))
+      var(--dark, linear-gradient(180deg, #23495e 0%, #264f66 100%));
+    --button-accent:
+      var(--light, linear-gradient(180deg, #c5e6df 0%, #b8e0d9 100%))
+      var(--dark, linear-gradient(180deg, #538a7a 0%, #4d8071 100%));
+    --button-accent-pressed:
+      var(--light, linear-gradient(180deg, #b8e0d9 0%, #c5e6df 100%))
+      var(--dark, linear-gradient(180deg, #4d8071 0%, #538a7a 100%));
+    --button-glow:
+      var(--light, #fcfcfc)
+      var(--dark, rgba(249,251,252,.05));
 
-    --dice-saturation: 0%;
-    --dice-lightness: 80%;
+    --dice-hue: 32;
+    --dice-saturation: var(--light, 48%) var(--dark, 0%);
+    --dice-lightness:  var(--light, 90%) var(--dark, 80%);
   }
-
-  *:focus{
-    outline: 3px solid var(--pri-txt-color);
-  }
-
-}
 
 
 /* 2. General
@@ -219,17 +229,13 @@ input{
 }
 
 button.manual-toggle{
-  display: none;
-  position: absolute;
-  top: var(--page-padding);
-  right: calc(50vw - var(--board-width) - ( 4 * var(--page-padding)));
   padding: .5rem 1rem;
   font-weight: bold;
 }
 
-@media screen and (min-width: 50rem){
+@media screen and (max-width: 50rem){
   button.manual-toggle{
-    display: block;
+    display: none;
   }
 }
 
@@ -319,6 +325,10 @@ button.manual-toggle{
     filter: brightness(96%);
   }
 
+  button:focus{
+    z-index: 1;
+  }
+
   button[readonly],
   .show-manual .manual-toggle{
     pointer-events: none;
@@ -326,10 +336,6 @@ button.manual-toggle{
     box-shadow:
       inset 0 -1px 0 0 var(--button-glow),
       inset 0 2px 2px 0 rgba(0,0,0,.03);
-  }
-
-  button:focus{
-    z-index: 1;
   }
 
   .board button:nth-child(5n + 1),
@@ -342,6 +348,12 @@ button.manual-toggle{
   .board button[readonly]:nth-child(7n),
   .show-manual .manual-toggle{
     background-image: var(--button-accent-pressed);
+  }
+
+  button .icon{
+    vertical-align: middle;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   /* --- 8.2 Lines ---------------------------------------------------------- */
@@ -498,3 +510,119 @@ button.manual-toggle{
 .die[data-value="4"]::before{ background-position-x: -9rem  }
 .die[data-value="5"]::before{ background-position-x: -12rem }
 .die[data-value="6"]::before{ background-position-x: -15rem }
+
+
+/* 10. Settings
+----------------------------------------------------------------------------- */
+nav{
+  position: fixed;
+  top: var(--page-padding);
+  right: var(--page-padding);
+  z-index: 2;
+}
+
+/* 10. Settings
+----------------------------------------------------------------------------- */
+.settings{
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  transform: scale(.95);
+  opacity: 0;
+  -webkit-backdrop-filter: blur(1.5rem);
+  backdrop-filter: blur(1.5rem);
+  overflow: auto;
+}
+
+.settings:not([hidden]){
+  animation: popIn .2s forwards;
+}
+
+@keyframes popIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.settings .layout{
+  max-width: 19.5rem;
+  margin: calc( 2 * var(--page-padding) ) auto;
+}
+
+.settings fieldset{
+  border: none;
+  margin-top: 2rem;
+}
+
+
+/* 11. Form Elements
+----------------------------------------------------------------------------- */
+
+  /* --- 11.1 Label --------------------------------------------------------- */
+  .label{
+    display: block;
+    margin: 2rem 0 .5rem 0;
+    font-weight: bold;
+    font-size: 0.9375rem;
+    color: var(--sec-txt-color);
+  }
+
+  /* --- 11.2 Select -------------------------------------------------------- */
+  select{
+    -webkit-appearance: none;
+    width: 100%;
+    padding: .75rem 1rem;
+    border: none;
+    border-radius: .5rem;
+
+    font: inherit;
+    color: inherit;
+
+    background-color: var(--pri-bg-color);
+    background-image: url(../images/chevron-down.svg);
+    background-repeat: no-repeat;
+    background-position: center right 1.25rem;
+    background-size: 1rem;
+
+    box-shadow:
+      0 1px 4px 0 rgba(0,0,0,0.08),
+      0 0 0 1px rgba(0,0,0,0.04);
+  }
+
+  /* --- 11.3 Theme Switch ---------------------------------------------------- */
+  .theme-switch{
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .theme-switch .option{
+    display: inline-block;
+    background: var(--pri-bg-color);
+    box-shadow:
+      0 1px 4px 0 rgba(0,0,0,0.08),
+      0 0 0 1px rgba(0,0,0,0.04);
+    border-radius: .5rem;
+    padding: .1875rem;
+    vertical-align: top;
+  }
+
+  .theme-switch .option:not(:last-of-type){
+    margin-right: .25rem;
+  }
+
+  .theme-switch .option img{
+    display: block;
+    width: 5.75rem;
+    margin-bottom: .25rem;
+    border-radius: .375rem .375rem 0 0;
+  }
+
+  .theme-switch [type=radio]{
+    width: 1rem;
+    height: 1rem;
+    vertical-align: bottom;
+    margin-bottom: .3rem;
+  }

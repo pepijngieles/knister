@@ -22,6 +22,8 @@
     13. Keyboard controls
     14. Toggle Manual
     15. Prepare the board
+    16. Translate the interface
+    17. Theme switcher
 
 */
 
@@ -33,14 +35,18 @@ let roll = 0,
     scoreSum,
     highScore = getStorageItem('highScore', 0)
 
-const diceElements = document.querySelectorAll('.die'),
-      totalScoreEl = document.querySelector('[name=total-score]'),
-      highScoreEl = document.querySelector('[name=high-score]'),
+const boardFields = document.querySelectorAll('[data-el=board] input'),
       buttons = document.querySelectorAll('[data-el=board] button'),
-      boardFields = document.querySelectorAll('[data-el=board] input'),
-      manualToggle = document.querySelector('[data-el=manual-toggle]'),
-      manualEl = document.querySelector('[data-el=manual]'),
+      diceElements = document.querySelectorAll('.die'),
       liveRegion = document.querySelector('[aria-live]'),
+      manualEl = document.querySelector('[data-el=manual]'),
+      manualToggle = document.querySelector('[data-el=manual-toggle]'),
+      settingsEl = document.querySelector('[data-el=settings]'),
+      settingsToggle = document.querySelector('[data-el="settings-toggle"]'),
+      languageSelect = document.body.querySelector('[data-el=language-select]'),
+      themeSwitch = document.querySelector('[data-el=theme-switch]'),
+      highScoreEl = document.querySelector('[name=high-score]'),
+      totalScoreEl = document.querySelector('[name=total-score]'),
       scores = {
         '2-oak': '1',
         '3-oak': '3',
@@ -61,6 +67,12 @@ for (let button of buttons) button.addEventListener('click', handleButtonClick)
 manualToggle.addEventListener('click', toggleManual)
 // Keyboard controls
 document.addEventListener('keydown', moveFocus)
+// Settings button
+settingsToggle.addEventListener('click', openSettings)
+// Language <select> of the settings menu
+languageSelect.addEventListener('change', function(){translate(this.value)})
+// Theme switch
+themeSwitch.addEventListener('change', switchTheme)
 
 
 /* 3. Generic functions
@@ -76,6 +88,10 @@ function getStorageItem(item, defaultValue){
   if (localStorage.getItem(item) == null) localStorage.setItem(item, defaultValue)
   // Return the item's value
   return localStorage.getItem(item)
+}
+
+function openSettings(){
+  settingsEl.toggleAttribute('hidden');
 }
 
 
@@ -359,9 +375,9 @@ function moveFocus(e){
 /* 14. Toggle Manual
 ----------------------------------------------------------------------------- */
 function toggleManual(e) {
-  // Toggle the CSS class on the body element
+  // 1. Toggle the CSS class on the body element
   document.body.classList.toggle('show-manual')
-  // Put the current state in a variable
+  // 2. Put the current state in a variable
   let manualOpened = document.body.classList.contains('show-manual')
   let currentState = (manualOpened) ? 'open' : 'closed'
   // Store it in localStorage
@@ -385,3 +401,44 @@ function prepareBoard(){
 
 prepareBoard()
 rollDice()
+
+
+/* 16. Translate the interface
+----------------------------------------------------------------------------- */
+// 1. Retreive the user's system language
+const userLanguage = navigator.language || navigator.userLanguage
+// 2. If it's not English, start translation
+if (!userLanguage.includes('en')) translate(userLanguage)
+
+function translate(langCode){
+  // 3. Retreive all elements that need translation
+  const translatableElements = document.querySelectorAll('[data-t]')
+  // 4. Check the javascript object to find the right language
+  for (var translation of translations){
+    // 5. If there's a match on language code
+    if (translation['codes'].includes(langCode)) {
+      // 6. Change the language attribute on the html tag
+      document.documentElement.lang = translation['codes'][0];
+      // 7. Loop through every element
+      for (var element of translatableElements){
+        // 8. And replace the content with its translation
+        element.innerHTML = translation[element.getAttribute('data-t')]
+      }
+    }
+  }
+}
+
+
+/* 17. Theme switcher
+----------------------------------------------------------------------------- */
+function switchTheme(){
+  let theme = document.forms.settings.theme.value
+  document.documentElement.className = 'theme-' + theme
+  localStorage.setItem('theme', theme)
+}
+
+let currentTheme = getStorageItem('theme', 'system')
+if (currentTheme !== 'system') {
+  document.forms['settings'][currentTheme].checked = true;
+  switchTheme()
+}

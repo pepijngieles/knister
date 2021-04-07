@@ -1,28 +1,38 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang=en class=theme-system>
 <head>
   <meta charset=UTF-8>
   <meta name=viewport content=width=device-width,initial-scale=1.0>
-
   <title>Knister</title>
   <meta name=description content="Knister is a dice game designed by Heinz Wüppen where you get points by making Yhatzee-like combinations in a 5x5 grid.">
   <meta name=author content="Pepijn Gieles">
-
   <link rel=icon href=images/favicons/die_icon.ico>
   <link rel=icon href=images/favicons/die_icon.svg type=image/svg+xml>
   <link rel=apple-touch-icon href=images/favicons/die_icon-180.png>
   <link rel=manifest href=manifest.json>
-
   <link rel=stylesheet type=text/css href=css/styles.css>
   <script defer src=js/script.js></script>
   <script defer src=js/translations.js></script>
 </head>
 <body class=show-manual>
 
-  <button class=manual-toggle data-el=manual-toggle  aria-pressed=true>
-    <span class=visually-hidden>Toggle Manual</span>
-    ?
-  </button>
+  <nav>
+    <button class=manual-toggle data-el=manual-toggle aria-pressed=true>
+      <span class=visually-hidden>Toggle Manual</span>
+      ?
+    </button>
+
+    <button class=settings-toggle data-el=settings-toggle>
+      <svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24" class=icon>
+        <g fill=none fill-rule=evenodd stroke=currentColor>
+          <path stroke-linecap=round d="M4.5 6.5h15M4.5 18.5h15M4.5 12.5h15"/>
+          <circle fill=var(--pri-bg-color) cx=14.5 cy=6.5  r="2"/>
+          <circle fill=var(--pri-bg-color) cx=7.5  cy=12.5 r="2"/>
+          <circle fill=var(--pri-bg-color) cx=12.5 cy=18.5 r="2"/>
+        </g>
+      </svg>
+    </button>
+  </nav>
 
   <div class=scores>
     <output aria-label="Your current game score is 0" name=total-score tabindex=0>0</output>
@@ -106,6 +116,42 @@
     <a href=https://nsv.de/nsvspielttv/knister_video/></a>
     <a href=https://www.youtube.com/watch?v=_HWIPtNJoR8/></a>
   </aside>
+
+  <form id=settings class=settings data-el=settings hidden>
+    <div class=layout>
+
+      <h2 data-t=settings>Settings</h2>
+
+      <label class=label data-t=language>Language</label>
+      <select data-el=language-select>
+        <option value=en>English</option>
+        <option value=nl>Nederlands</option>
+      </select>
+
+      <fieldset class=theme-switch data-el=theme-switch>
+        <legend class=label data-t=theme>Theme</legend>
+
+        <label class=option for=light>
+          <img src=images/theme-visuals/light.svg aria-hidden=true>
+          <input type=radio name=theme value=light id=light>
+          <span data-t=light>Light</span>
+        </label>
+
+        <label class=option for=system>
+          <img src=images/theme-visuals/system.svg aria-hidden=true>
+          <input type=radio name=theme value=system id=system checked>
+          <span data-t=system>System</span>
+        </label>
+
+        <label class=option for=dark>
+          <img src=images/theme-visuals/dark.svg aria-hidden=true>
+          <input type=radio name=theme value=dark id=dark>
+          <span data-t=dark>Dark</span>
+        </label>
+      </fieldset>
+
+    </div>
+  </form>
 
   <div aria-live=assertive class=visually-hidden></div>
 
