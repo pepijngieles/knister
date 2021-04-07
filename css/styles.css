@@ -59,11 +59,12 @@
   :root{
     --pri-bg-color:    var(--light, #f9f9f9) var(--dark, #143b4f);
     --sec-bg-color:    var(--light, #f0f1f2) var(--dark, #17455c);
-    --accent-bg-color: var(--light, #C7EBE4) var(--dark, #264E56);
+    --accent-bg-color: var(--light, #c7ebe4) var(--dark, #264e56);
+    --input-bg-color:  var(--light, #ffffff) var(--dark, #13374a);
 
-    --pri-txt-color:   var(--light, #5D6362) var(--dark, rgba(247,247,247,.95));
-    --sec-txt-color:   var(--light, #868D8C) var(--dark, rgba(247,247,247,.8));
-    --ter-txt-color:   var(--light, #BBC1C0) var(--dark, rgba(247,247,247,.5));
+    --pri-txt-color:   var(--light, #5d6362) var(--dark, rgba(247,247,247,.95));
+    --sec-txt-color:   var(--light, #868d8c) var(--dark, rgba(247,247,247,.80));
+    --ter-txt-color:   var(--light, #bbc1c0) var(--dark, rgba(247,247,247,.50));
 
     --border-default:  var(--light, #e3e5e6) var(--dark, #2d4b5c);
     --border-subtle:   var(--light, #eeeeee) var(--dark, #325466);
@@ -356,50 +357,6 @@ button.manual-toggle{
     height: 1.5rem;
   }
 
-  /* --- 8.2 Lines ---------------------------------------------------------- */
-  button[data-row="1"]::before,
-  button[data-column="4"]::after,
-  button[data-row="1"][data-column="5"]::after,
-  button[data-row="5"][data-column="5"]::after{
-    content: '';
-    display: block;
-    position: absolute;
-    z-index: -1;
-    background-color: var(--border-default);
-  }
-
-  button[data-row="1"]::before{
-    width: 1px;
-    height: .75rem;
-    top: -.75rem;
-    left: 1.5rem;
-  }
-
-  button[data-column="4"]::after{
-    width: .75rem;
-    height: 1px;
-    top: 1.5rem;
-    right: -4rem;
-  }
-
-  button[data-row="1"][data-column="5"]::after,
-  button[data-row="5"][data-column="5"]::after{
-    width: 1px;
-    height: calc(1.5rem + 1px);
-    right: calc(-.5rem - 1px);
-    background-color: var(--border-accent);
-  }
-
-  button[data-row="1"][data-column="5"]::after{
-    top: calc(-1.25rem - 1px);
-    transform: rotate(45deg);
-  }
-
-  button[data-row="5"][data-column="5"]::after{
-    top: 2.75rem;
-    transform: rotate(-45deg);
-  }
-
   /* --- 8.3 Animations ----------------------------------------------------- */
   @keyframes pop {
     0%  { transform: scale(1.0) }
@@ -581,7 +538,7 @@ nav{
     font: inherit;
     color: inherit;
 
-    background-color: var(--pri-bg-color);
+    background-color: var(--input-bg-color);
     background-image: url(../images/chevron-down.svg);
     background-repeat: no-repeat;
     background-position: center right 1.25rem;
@@ -600,7 +557,7 @@ nav{
 
   .theme-switch .option{
     display: inline-block;
-    background: var(--pri-bg-color);
+    background: var(--input-bg-color);
     box-shadow:
       0 1px 4px 0 rgba(0,0,0,0.08),
       0 0 0 1px rgba(0,0,0,0.04);
