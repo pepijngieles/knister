@@ -125,6 +125,8 @@ function rollDice(){
 /* 5. Handle clicks on the board's buttons
 ----------------------------------------------------------------------------- */
 function handleButtonClick(){
+  // Don't allow clicks on already filled buttons
+  if(this.hasAttribute('readonly')) return
   // Update the button's attributes
   updateButtonAttributes(this)
   // Reset the animation classes for every button
@@ -199,16 +201,16 @@ function buildQuerySelectors(button){
 }
 
 
-/* 8. Build a set of cell values from a querySelector
+/* 8. Build a set of button values from a querySelector
 ----------------------------------------------------------------------------- */
 function buildSet(querySelector){
-  // .1. Get the needed cells with the query selectors
-  let cells = document.querySelectorAll(querySelector[0])
-  let set = new Array()
-  // 2. Put every cell's value in an array
-  for (let cell of cells) set.push(parseInt(cell.value))
+  // .1. Get the needed buttons with the query selectors
+  let buttonSet = document.querySelectorAll(querySelector[0])
+  // 2. Put every button's value in an array
+  let setValues = new Array()
+  for (let button of buttonSet) setValues.push(parseInt(button.value))
   // 3. If it contains 5 numbers, it's entirely filled
-  return { 'numbers': set, 'elements': cells }
+  return { 'numbers': setValues, 'elements': buttonSet }
 }
 
 
@@ -297,10 +299,10 @@ function fillSetValue(setQs){
       let score = calculateSetScore(set.numbers)
       // If it's the diagonal set, double the score
       if(querySelector[1].includes("diagonal")) score *= 2
-      // Fill the score in the right cell
-      let scoreCell = document.querySelector(querySelector[1])
-      scoreCell.value = score
-      //
+      // Fill the score in the right output
+      let output = document.querySelector(querySelector[1])
+      output.value = score
+      // Recalculate the total score
       updateTotalScore()
       // 10.2 Animation
       // Determine which direction this set is, needed for the animation
