@@ -35,7 +35,7 @@ let roll = 0,
     scoreSum,
     highScore = getStorageItem('highScore', 0)
 
-const boardFields = document.querySelectorAll('[data-el=board] input'),
+const boardFields = document.querySelectorAll('[data-el=board] output'),
       buttons = document.querySelectorAll('[data-el=board] button'),
       diceElements = document.querySelectorAll('.die'),
       liveRegion = document.querySelector('[aria-live]'),

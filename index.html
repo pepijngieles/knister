@@ -49,6 +49,10 @@
 
     <output type=text name=diagonal-ttb placeholder=x2 readonly tabindex=-1></output>
 
+    <!-- Tried using inputs instead of buttons as it might seem more semantic.
+         But the default behavior of buttons matches the expected behaviour way
+         better. For inputs all kind of keyboard event listeners should be added
+         and even then it probably won't work in case of speech input e.g. -->
     <button data-row=1 data-column=1 value=0 aria-label="Blank. Row 1, column 1"> </button>
     <button data-row=1 data-column=2 value=0 aria-label="Blank. Row 1, column 2"> </button>
     <button data-row=1 data-column=3 value=0 aria-label="Blank. Row 1, column 3"> </button>
