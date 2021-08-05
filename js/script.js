@@ -42,7 +42,6 @@ const boardFields = document.querySelectorAll('[data-el=board] output'),
       manualEl = document.querySelector('[data-el=manual]'),
       manualToggle = document.querySelector('[data-el=manual-toggle]'),
       settingsEl = document.querySelector('[data-el=settings]'),
-      settingsToggle = document.querySelector('[data-el="settings-toggle"]'),
       languageSelect = document.body.querySelector('[data-el=language-select]'),
       themeSwitch = document.querySelector('[data-el=theme-switch]'),
       highScoreEl = document.querySelector('[name=high-score]'),
@@ -61,17 +60,13 @@ const boardFields = document.querySelectorAll('[data-el=board] output'),
 
 /* 2. Event listeners
 ----------------------------------------------------------------------------- */
-// All buttons on the board
+// Add listener to all buttons on the board
 for (let button of buttons) button.addEventListener('click', handleButtonClick)
-// Game manual button
-manualToggle.addEventListener('click', toggleManual)
 // Keyboard controls
-document.addEventListener('keydown', moveFocus)
-// Settings button
-settingsToggle.addEventListener('click', openSettings)
-// Language <select> of the settings menu
+document.addEventListener('keydown', handleShortcuts)
+// Trigger the translate function on change of the language <select> element
 languageSelect.addEventListener('change', function(){translate(this.value)})
-// Theme switch
+// Tigger the switchTheme function on change of the theme switch radio buttons
 themeSwitch.addEventListener('change', switchTheme)
 
 
@@ -90,8 +85,13 @@ function getStorageItem(item, defaultValue){
   return localStorage.getItem(item)
 }
 
-function openSettings(){
-  settingsEl.toggleAttribute('hidden');
+function toggleSettings(){
+  // Toggle the settings dialog's visibility
+  settingsEl.toggleAttribute('hidden')
+  // Determine if it's opened or closed
+  let currentState = (settingsEl.hasAttribute('hidden')) ? 'closed' : 'open'
+  // If open, set focus on the element
+  if (currentState === 'open') settingsEl.focus();
 }
 
 
@@ -344,48 +344,61 @@ function finishGame(){
 
 /* 13. Keyboard controls
 ----------------------------------------------------------------------------- */
-function moveFocus(e){
-  // Check if the arrow keys have been hit
-  if (e.keyCode > 36 && e.keyCode < 41) {
-    // Make sure the current focussed element is a grid cell
-    if (e.target.dataset.row){
-      // Get the current row and column
-      let row = e.target.dataset.row
-      let column = e.target.dataset.column
-      // Adjust according to the pressed key
-      if (e.keyCode == 37) column--
-      if (e.keyCode == 38) row--
-      if (e.keyCode == 39) column++
-      if (e.keyCode == 40) row++
-      // Handle edge cases
-      if (row == 6) row = 1
-      if (row == 0) row = 5
-      if (column == 6) column = 1
-      if (column == 0) column = 5
-      // Create a query selector to retreive the next cell
-      let qs = '[data-row="' + row + '"][data-column="' + column + '"]'
-      let nextCell = document.body.querySelector(qs)
-      // Focus the right element
-      nextCell.focus()
-    }
-    // If there's no focus on an element yet, move it to the first button
-    else if(!document.querySelector(':focus')) buttons[0].focus()
+function handleShortcuts(e){
+  // Check if the escape key has been hit
+  if(e.keyCode == 27){
+    // If so, and the settings are open, close them
+    if (!settingsEl.hasAttribute('hidden')) toggleSettings()
+    // Else, if the manual is open, close it
+    else if (document.body.classList.contains('show-manual')) toggleManual()
   }
+  // Check if the arrow keys have been hit
+  if (e.keyCode > 36 && e.keyCode < 41) moveFocus(e)
+}
+
+function moveFocus(e){
+  // Make sure the current focussed element is a grid cell
+  if (e.target.dataset.row){
+    // Get the current row and column
+    let row = e.target.dataset.row
+    let column = e.target.dataset.column
+    // Adjust according to the pressed key
+    if (e.keyCode == 37) column--
+    if (e.keyCode == 38) row--
+    if (e.keyCode == 39) column++
+    if (e.keyCode == 40) row++
+    // Handle edge cases
+    if (row == 6) row = 1
+    if (row == 0) row = 5
+    if (column == 6) column = 1
+    if (column == 0) column = 5
+    // Create a query selector to retreive the next cell
+    let qs = '[data-row="' + row + '"][data-column="' + column + '"]'
+    let nextCell = document.body.querySelector(qs)
+    // Focus the right element
+    nextCell.focus()
+  }
+  // If there's no focus on an element yet, move it to the first button
+  else if(!document.querySelector(':focus')) buttons[0].focus()
 }
 
 
 /* 14. Toggle Manual
 ----------------------------------------------------------------------------- */
 function toggleManual(e) {
-  // 1. Toggle the CSS class on the body element
+  // 1. Toggle the CSS class on the body element so .board can be layed out
   document.body.classList.toggle('show-manual')
-  // 2. Put the current state in a variable
-  let manualOpened = document.body.classList.contains('show-manual')
-  let currentState = (manualOpened) ? 'open' : 'closed'
-  // Store it in localStorage
+  // 2. Toggle the hidden attribute on the manual itself
+  manualEl.toggleAttribute('hidden')
+  // 3. Put the current state in a variable and store it in localStorage
+  let currentState = (manualEl.hasAttribute('hidden')) ? 'closed' : 'open'
   localStorage.setItem('manual', currentState)
-  // Put focus on the manual element
-  // if (currentState == 'open') manualEl.focus()
+  // 4. Set the aria-pressed attribute on the toggle button
+  if (currentState === 'open') manualToggle.setAttribute('aria-pressed', 'true')
+  else manualToggle.removeAttribute('aria-pressed')
+  // 5. Scroll the manual into view if needed
+  manualEl.scrollIntoView()
+  if (currentState === 'open') manualEl.focus()
 }
 
 // Close manual if needed

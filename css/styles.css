@@ -2,26 +2,28 @@
 
     TABLE OF CONTENTS
 
-    1. Custom properties
+    1. Custom Properties
     2. General
     3. Responsiveness
-    4. Scores
-    5. Board
-    6. Game manual
-    7. Input
-    8. Button
-    9. Dice
+    4. Top Bar
+    5. Buttons
+    6. Board
+    7. Manual
+    8. Dice
+    9. Settings
+    10. Form Elements
+    11. Animations
 
 */
 
 
-/* 1. Custom properties
+/* 1. Custom Properties
 ----------------------------------------------------------------------------- */
 
   /* --- 1.1 General -------------------------------------------------------- */
   :root{
     --board-width: 18.75rem;
-    --page-padding: .5rem;
+    --page-padding: .625rem;
   }
 
   @media screen and (min-width: 720px){
@@ -30,7 +32,7 @@
     }
   }
 
-  /* --- 1.2 Dark mode logic ------------------------------------------------ */
+  /* --- 1.2 Theme Logic ---------------------------------------------------- */
   :root {
     --ON: initial;
     --OFF: ;
@@ -55,16 +57,17 @@
     }
   }
 
-  /* --- 1.3 Dark mode colors ----------------------------------------------- */
+  /* --- 1.3 Theme Colors --------------------------------------------------- */
   :root{
     --pri-bg-color:    var(--light, #f9f9f9) var(--dark, #143b4f);
     --sec-bg-color:    var(--light, #f0f1f2) var(--dark, #17455c);
     --accent-bg-color: var(--light, #c7ebe4) var(--dark, #264e56);
     --input-bg-color:  var(--light, #ffffff) var(--dark, #13374a);
 
-    --pri-txt-color:   var(--light, #5d6362) var(--dark, rgba(247,247,247,.95));
-    --sec-txt-color:   var(--light, #868d8c) var(--dark, rgba(247,247,247,.80));
-    --ter-txt-color:   var(--light, #bbc1c0) var(--dark, rgba(247,247,247,.50));
+    --pri-txt-color:    var(--light, #5d6362) var(--dark, rgba(247,247,247,.95));
+    --sec-txt-color:    var(--light, #868d8c) var(--dark, rgba(247,247,247,.80));
+    --ter-txt-color:    var(--light, #bbc1c0) var(--dark, rgba(247,247,247,.50));
+    --accent-txt-color: var(--light, #4d8075) var(--dark, rgba(247,247,247,.80));
 
     --border-default:  var(--light, #e3e5e6) var(--dark, #2d4b5c);
     --border-subtle:   var(--light, #eeeeee) var(--dark, #325466);
@@ -96,39 +99,44 @@
 /* 2. General
 ----------------------------------------------------------------------------- */
 html{
+  box-sizing: border-box;
+  padding-top: var(--page-padding);
+  background-color: var(--pri-bg-color);
+
   font: 100% / 1.5 'Avenir', sans-serif;
   color: var(--pri-txt-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--pri-bg-color);
-  overflow-x: hidden;
-  box-sizing: border-box;
+
+  /* Selection is not needed and not expected in this game, can be removed */
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  /* Animate scroll when manual is opened on mobile */
+  scroll-behavior: smooth;
 }
 
 *,
 *:before,
 *:after{
+  box-sizing: inherit;
   margin: 0;
   padding: 0;
-  box-sizing: inherit;
-}
-
-input{
-  font: inherit;
-  color: inherit;
+  cursor: default;
 }
 
 .visually-hidden{
-  border: 0 !important;
+  position: absolute !important;
   clip: rect(1px, 1px, 1px, 1px) !important;
   -webkit-clip-path: inset(50%) !important;
   clip-path: inset(50%) !important;
-  height: 1px !important;
   overflow: hidden !important;
-  padding: 0 !important;
-  position: absolute !important;
-  width: 1px !important;
   white-space: nowrap !important;
+  height: 1px !important;
+  width: 1px !important;
+  padding: 0 !important;
+  border: 0 !important;
 }
 
 @media screen and (prefers-reduced-motion: reduce) {
@@ -143,38 +151,36 @@ input{
 
 /* 3. Responsiveness
 ----------------------------------------------------------------------------- */
-@media screen and (min-width: 374px){
+@media screen and (min-width: 24em) and (min-height: 40em){
   html{
     font-size: 112.5%
   }
 }
 
-@media screen and (min-width: 413px){
+@media screen and (min-width: 25em) and (min-height: 42.5em){
   html{
     font-size: 125%
   }
 }
 
 
-/* 4. Scores
+/* 4. Top Bar
 ----------------------------------------------------------------------------- */
-.scores{
+.top-bar{
+  display: grid;
+  grid-template-columns: 1fr auto;
   max-width: var(--board-width);
-  margin: 2rem auto 1rem;
-  text-align: right;
+  margin: var(--page-padding) auto;
 }
 
 .scores output{
-  display: inline;
-  box-shadow: none;
-  border: none;
-  background-color: transparent;
   font-weight: bold;
   font-size: 3rem;
+  line-height: 1;
+  margin-left: .5rem;
 }
 
-.scores [name=total-score]{
-  margin-right: .5rem;
+.scores output[name=total-score]{
   color: var(--sec-txt-color);
 }
 
@@ -183,188 +189,94 @@ input{
 }
 
 
-/* 5. Board
------------------------------------------------------------------------------ */
-.board{
-  max-width: var(--board-width);
-  display: grid;
-  grid-gap: .25rem;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(8, 3rem);
-  margin: 0 auto 3rem;
-}
-
-@media screen and (min-width: 50rem){
-  .board,
-  .scores{
-    transition: transform .3s ease-out;
-  }
-
-  .show-manual .board,
-  .show-manual .scores{
-    transform: translateX( calc( (-.5 * var(--board-width)) - var(--page-padding) ));
-  }
-}
-
-
-/* 6. Game manual
------------------------------------------------------------------------------ */
-.game-manual{
-  max-width: var(--board-width);
-  margin: 0 auto calc(4 * var(--page-padding));
-  cursor: default;
-}
-
-@media screen and (min-width: 50rem){
-  .game-manual{
-    transform: translateX(calc(var(--board-width) + var(--page-padding)));
-    position: absolute;
-    top: calc( 2 * var(--page-padding) );
-    right: var(--page-padding);
-    transition: transform .3s ease-out;
-  }
-
-  .show-manual .game-manual{
-    transform: translateX( calc( -1 * (50vw - var(--board-width)) + var(--page-padding) * 2));
-  }
-}
-
-button.manual-toggle{
-  padding: .5rem 1rem;
-  font-weight: bold;
-}
-
-@media screen and (max-width: 50rem){
-  button.manual-toggle{
-    display: none;
-  }
-}
-
-.game-manual h2{
-  font-size: 1.25rem;
-  margin-bottom: .25rem;
-}
-
-.game-manual p {
-  margin-bottom: 1rem;
-}
-
-.game-manual dl{
-  display: grid;
-  grid-template-columns: 1fr auto;
-}
-
-.game-manual dt,
-.game-manual dd{
-  padding-bottom: .25rem;
-  margin-bottom: .25rem
-}
-
-.game-manual dt:not(:last-of-type),
-.game-manual dd:not(:last-of-type){
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.game-manual dd{
-  text-align: right;
-  padding-left: 1.5rem;
-}
-
-
-/* 7. Board output
------------------------------------------------------------------------------ */
-.board output{
-  max-width: 2rem;
-  max-height: 2rem;
-  margin: .5rem 0 .5rem .5rem;
-  border: none;
-
-  font-size: .875rem;
-  text-align: center;
-  line-height: 2.1rem;
-
-  background-color: var(--sec-bg-color);
-}
-
-.board output:not([name*=sum]){
-  border-radius: 50%;
-  color: var(--ter-txt-color);
-  box-shadow: inset 0 1px 2px 0 rgba(0,0,0,.05);
-}
-
-.board output[name*=diagonal]{
-  background: var(--accent-bg-color);
-  box-shadow: inset 0 1px 2px 0 rgba(0,0,0,.06);
-}
-
-.board output::placeholder{
-  color: var(--ter-txt-color);
-}
-
-
-/* 8. Button
+/* 5. Buttons
 ----------------------------------------------------------------------------- */
 
-  /* --- 8.1 General -------------------------------------------------------- */
+  /* --- 5.1 General -------------------------------------------------------- */
   button{
     min-width: 3rem;
     min-height: 3rem;
-    position: relative; /* to absolutely position the ::after element */
     border: none;
     border-radius: 0.15625rem;
     background-color: var(--sec-bg-color);
     background-image: var(--button-default);
 
     font: inherit;
-    font-size: 1.125rem;
+    font-size: inherit;
     color: inherit;
     box-shadow:
       inset 0 1px 0 0 var(--button-glow),
       inset 0 -1px 2px 0 rgba(0,0,0,.05);
   }
 
-  button:hover{
-    filter: brightness(96%);
+  .theme-light button:hover,
+  .theme-system button:hover{
+    filter: brightness(.98);
   }
 
-  button:focus{
-    z-index: 1;
+  .theme-dark button:hover{
+    filter: brightness(1.07);
   }
 
-  button[readonly],
-  .show-manual .manual-toggle{
-    pointer-events: none;
+  button[readonly]{
+    pointer-events: none; /* prevent clicking the button when filled in */
     background-image: var(--button-default-pressed);
     box-shadow:
-      inset 0 -1px 0 0 var(--button-glow),
+      inset 0 1px 0 0 var(--pri-bg-color),
       inset 0 2px 2px 0 rgba(0,0,0,.03);
   }
 
+  /* --- 5.2 Icons ---------------------------------------------------------- */
+  button .icon{
+    vertical-align: middle;
+  }
+
+  /* --- 5.3 Ghost Buttons -------------------------------------------------- */
+  button.ghost{
+    border-radius: .5rem;
+    color: var(--accent-txt-color);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  button.ghost:hover{
+    background: var(--pri-bg-color);
+  }
+
+  button.ghost[aria-pressed="true"]{
+    background-color: var(--sec-bg-color);
+  }
+
+  button.ghost:not(:hover):not([aria-pressed="true"]){
+    opacity: .8;
+  }
+
+
+/* 6. Board
+----------------------------------------------------------------------------- */
+
+  /* --- 6.1 General -------------------------------------------------------- */
+  .board{
+    display: grid;
+    grid-gap: .25rem;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(8, 3rem);
+    max-width: var(--board-width);
+    margin: 0 auto 1rem;
+  }
+
+  /* --- 6.2 Diagonal Buttons ----------------------------------------------- */
   .board button:nth-child(5n + 1),
-  .board button:nth-child(7n),
-  .manual-toggle{
+  .board button:nth-child(7n){
     background-image: var(--button-accent);
   }
 
   .board button[readonly]:nth-child(5n + 1),
-  .board button[readonly]:nth-child(7n),
-  .show-manual .manual-toggle{
+  .board button[readonly]:nth-child(7n){
     background-image: var(--button-accent-pressed);
   }
 
-  button .icon{
-    vertical-align: middle;
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-
-  /* --- 8.3 Animations ----------------------------------------------------- */
-  @keyframes pop {
-    0%  { transform: scale(1.0) }
-    33% { transform: scale(1.2) }
-    66% { transform: scale(0.9) }
-  }
-
+  /* --- 6.3 Button Animations ---------------------------------------------- */
   .board button.animate{
     animation: pop .4s
   }
@@ -389,8 +301,99 @@ button.manual-toggle{
     animation-delay: .32s!important
   }
 
+  /* --- 6.4 Output --------------------------------------------------------- */
+  .board output{
+    max-width: 2rem;
+    max-height: 2rem;
+    margin: .5rem 0 .5rem .5rem;
+    border: none;
+    border-radius: 50%;
 
-/* 9. Dice
+    font-size: .875rem;
+    text-align: center;
+    line-height: 2.1rem;
+    color: var(--ter-txt-color);
+
+    background-color: var(--sec-bg-color);
+    box-shadow: inset 0 1px 2px 0 rgba(0,0,0,.05);
+  }
+
+  .board output[name*=diagonal]{
+    background: var(--accent-bg-color);
+    box-shadow: inset 0 1px 2px 0 rgba(0,0,0,.06);
+  }
+
+
+/* 7. Manual
+----------------------------------------------------------------------------- */
+
+  /* --- 7.1 General -------------------------------------------------------- */
+  .manual{
+    opacity: 0;
+    max-width: var(--board-width);
+    margin: 0 auto calc(4 * var(--page-padding));
+  }
+
+  .manual:not([hidden]){
+    animation: fadeIn .3s .1s forwards;
+  }
+
+  @media screen and (min-width: 72em){
+    .manual{
+      transform: translateX( calc( -50vw - (2 * var(--page-padding)) ) );
+      position: absolute;
+      top: var(--page-padding);
+      right: var(--page-padding);
+    }
+  }
+
+  /* --- 7.2 Move board and top bar when manual is open --------------------- */
+  @media screen and (min-width: 50em){
+    .board,
+    .top-bar{
+      transition: transform .24s cubic-bezier(0.48, 0.18, 0.14, 0.96);
+    }
+
+    .show-manual .board,
+    .show-manual .top-bar{
+      transform:
+        translateX( calc( (.5 * var(--board-width)) - var(--page-padding) ));
+    }
+  }
+
+  /* --- 7.3 Contents ------------------------------------------------------- */
+  .manual h2{
+    margin-bottom: .25rem;
+    font-size: 1.25rem;
+  }
+
+  .manual p{
+    margin-bottom: 1rem;
+  }
+
+  .manual dl{
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+
+  .manual dt,
+  .manual dd{
+    padding-bottom: .25rem;
+    margin-bottom: .25rem;
+  }
+
+  .manual dt:not(:last-of-type),
+  .manual dd:not(:last-of-type){
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .manual dd{
+    text-align: right;
+    padding-left: 1.5rem;
+  }
+
+
+/* 8. Dice
 ----------------------------------------------------------------------------- */
 .dice{
   grid-column: 1 / 6;
@@ -401,29 +404,26 @@ button.manual-toggle{
 
 .die{
   display: inline-block;
-  position: relative;
   vertical-align: top;
   border-radius: .5rem;
   margin: .85rem;
-  text-align: center;
-  /*background-image: linear-gradient(0deg, #f5f0eb 0%, #faf8f5 100%);*/
+
+  /* background-color is added to prevent a glitchy white line on rotation */
+  background-color: hsl(var(--dice-hue), var(--dice-saturation), var(--dice-lightness));
   background-image:
     linear-gradient(
       -45deg,
       hsl(var(--dice-hue), calc(var(--dice-saturation) - 20%), calc(var(--dice-lightness) - 12%)) 0%,
       hsl(var(--dice-hue), var(--dice-saturation), var(--dice-lightness)) 100%);
-  background-color: #fff8f0;
-  /*box-shadow:
-    .0625rem .125rem .1875rem 0 rgba(0,0,0,.03),
-    .125rem .25rem .375rem 0 rgba(0,0,0,.05),
-    .25rem .5rem .75rem 0 rgba(0,0,0,.1);*/
+
   box-shadow:
     1px 2px 3px 0 rgba(0,0,0,0.03),
     2px 4px 3px 0 rgba(0,0,0,0.05),
     4px 8px 12px 0 rgba(0,0,0,0.10);
+
   transition:
-    transform .12s,
-    opacity .12s;
+    transform .12s cubic-bezier(0.48, 0.18, 0.14, 0.96),
+    opacity .12s cubic-bezier(0.48, 0.18, 0.14, 0.96);
 }
 
 .die:not(.show){
@@ -443,9 +443,12 @@ button.manual-toggle{
   height: 3rem;
   margin: .1875rem;
   border-radius: 50%;
-  /*box-shadow:
-    .0625rem .0625rem .125rem 0 #ffffff,
-    .125rem .125rem .375rem 0 rgba(0,0,0,0.02);*/
+  background-color:
+    hsl(var(--dice-hue), var(--dice-saturation), var(--dice-lightness));
+  background-image: url(../images/dice.svg);
+  background-repeat: no-repeat;
+  background-position: center left;
+  background-size: 18rem;
   box-shadow:
     1px 1px 2px 1px rgba(255,255,255,0.1),
     -1px -1px 2px 1px rgba(255,255,255,0.2),
@@ -455,12 +458,6 @@ button.manual-toggle{
     inset 1px 1px 2px 0 rgba(255,255,255,0.2),
     inset 8px 8px 12px 0 rgba(0,0,0,0.03),
     inset -1px -1px 2px 0  rgba(255,255,255,0.02);
-  /*background: #fffaf7 url(../images/dice.svg) no-repeat center left;*/
-  background-color: hsl(var(--dice-hue), var(--dice-saturation), var(--dice-lightness));
-  background-image: url(../images/dice.svg);
-  background-repeat: no-repeat;
-  background-position: center left;
-  background-size: 18rem;
 }
 
 .die[data-value="2"]::before{ background-position-x: -3rem  }
@@ -470,16 +467,7 @@ button.manual-toggle{
 .die[data-value="6"]::before{ background-position-x: -15rem }
 
 
-/* 10. Settings
------------------------------------------------------------------------------ */
-nav{
-  position: fixed;
-  top: var(--page-padding);
-  right: var(--page-padding);
-  z-index: 2;
-}
-
-/* 10. Settings
+/* 9. Settings
 ----------------------------------------------------------------------------- */
 .settings{
   position: fixed;
@@ -487,7 +475,6 @@ nav{
   left: 0;
   bottom: 0;
   right: 0;
-  transform: scale(.95);
   opacity: 0;
   -webkit-backdrop-filter: blur(1.5rem);
   backdrop-filter: blur(1.5rem);
@@ -495,19 +482,21 @@ nav{
 }
 
 .settings:not([hidden]){
-  animation: popIn .2s forwards;
-}
-
-@keyframes popIn {
-  to {
-    opacity: 1;
-    transform: none;
-  }
+  animation: fadeIn .2s forwards;
 }
 
 .settings .layout{
-  max-width: 19.5rem;
-  margin: calc( 2 * var(--page-padding) ) auto;
+  transform: scale(.95);
+  max-width: var(--board-width);
+  margin: var(--page-padding) auto;
+}
+
+.settings:not([hidden]) .layout{
+  animation: popIn .2s forwards;
+}
+
+.settings h2{
+  padding-top: .375rem;
 }
 
 .settings fieldset{
@@ -516,19 +505,25 @@ nav{
 }
 
 
-/* 11. Form Elements
+/* 10. Form Elements
 ----------------------------------------------------------------------------- */
 
-  /* --- 11.1 Label --------------------------------------------------------- */
+  /* --- 10.1 Input --------------------------------------------------------- */
+  input{
+    font: inherit;
+    color: inherit;
+  }
+
+  /* --- 10.2 Label --------------------------------------------------------- */
   .label{
     display: block;
-    margin: 2rem 0 .5rem 0;
+    margin: 1.5rem 0 .5rem 0;
     font-weight: bold;
     font-size: 0.9375rem;
     color: var(--sec-txt-color);
   }
 
-  /* --- 11.2 Select -------------------------------------------------------- */
+  /* --- 10.3 Select -------------------------------------------------------- */
   select{
     -webkit-appearance: none;
     width: 100%;
@@ -550,10 +545,16 @@ nav{
       0 0 0 1px rgba(0,0,0,0.04);
   }
 
-  /* --- 11.3 Theme Switch ---------------------------------------------------- */
+  /* --- 10.4 Theme Switch -------------------------------------------------- */
   .theme-switch{
     -webkit-appearance: none;
     appearance: none;
+  }
+
+  .theme-switch .grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: .5rem;
   }
 
   .theme-switch .option{
@@ -567,13 +568,9 @@ nav{
     vertical-align: top;
   }
 
-  .theme-switch .option:not(:last-of-type){
-    margin-right: .25rem;
-  }
-
   .theme-switch .option img{
     display: block;
-    width: 5.75rem;
+    width: 100%;
     margin-bottom: .25rem;
     border-radius: .375rem .375rem 0 0;
   }
@@ -584,3 +581,25 @@ nav{
     vertical-align: bottom;
     margin-bottom: .3rem;
   }
+
+
+/* 11. Animations
+----------------------------------------------------------------------------- */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pop {
+  0%  { transform: scale(1.0) }
+  33% { transform: scale(1.2) }
+  66% { transform: scale(0.9) }
+}
