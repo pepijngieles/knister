@@ -4,7 +4,7 @@
 
     1. Custom Properties
     2. General
-    3. Responsiveness
+    3. Layout
     4. Top Bar
     5. Buttons
     6. Board
@@ -100,7 +100,6 @@
 ----------------------------------------------------------------------------- */
 html{
   box-sizing: border-box;
-  padding-top: var(--page-padding);
   background-color: var(--pri-bg-color);
 
   font: 100% / 1.5 'Avenir', sans-serif;
@@ -149,8 +148,15 @@ html{
 }
 
 
-/* 3. Responsiveness
+/* 3. Layout
 ----------------------------------------------------------------------------- */
+body{
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: flex-end;
+  height: 100vh;
+}
+
 @media screen and (min-width: 24em) and (min-height: 40em){
   html{
     font-size: 112.5%
@@ -163,14 +169,21 @@ html{
   }
 }
 
+@media screen and (min-width: 60em) and (min-height: 48em){
+  body{
+    grid-template-rows: auto auto;
+    align-content: center;
+  }
+}
+
 
 /* 4. Top Bar
 ----------------------------------------------------------------------------- */
 .top-bar{
   display: grid;
   grid-template-columns: 1fr auto;
-  max-width: var(--board-width);
-  margin: var(--page-padding) auto;
+  width: var(--board-width);
+  margin: 0 auto calc(2 * var(--page-padding));
 }
 
 .scores output{
