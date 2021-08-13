@@ -14,7 +14,7 @@
   <script defer src=js/translations.js></script>
   <script defer src=js/script.js></script>
 </head>
-<body class=show-manual>
+<body class="show-manual hide-scrollbar">
 
   <div class=top-bar>
     <nav>
@@ -126,7 +126,7 @@
     <a href=https://www.youtube.com/watch?v=_HWIPtNJoR8/></a>
   </aside>
 
-  <form id=settings class=settings data-el=settings tabindex=-1 hidden>
+  <form id=settings class="settings overlay hide-scrollbar" data-el=settings tabindex=-1 hidden>
     <div class=layout>
 
       <button type=button class="close-settings ghost" onclick=toggleSettings()>
@@ -171,10 +171,26 @@
 
       </fieldset>
 
+      <ul class=no-indent>
+        <li>
+          <label>
+            <span data-t=animations>Animations</span>
+            <input type=checkbox name=animations class=toggle-switch data-el=animations-switch checked>
+          </label>
+        </li>
+      </ul>
+
     </div>
   </form>
 
   <div aria-live=assertive class=visually-hidden></div>
+
+  <noscript class=overlay>
+    <p>JavaScript is not functioning.</p>
+    <p>This game needs JavaScript to calculate and remember your scores.</p>
+    <p>Refreshing the page might help in case you had a connection issue. Else, try turning on JavaScript in your browser or device settings.</p>
+    <p>Still not working? Maybe your device doesn't support JavaScript. Unfortunatly you cannot play without it.</p>
+  </noscript>
 
 </body>
 </html>

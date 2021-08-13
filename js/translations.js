@@ -26,7 +26,9 @@ const translations = [
     'theme': 'Theme',
     'light': 'Light',
     'system': 'System',
-    'dark': 'Dark'
+    'dark': 'Dark',
+    'animations': 'Animations',
+    'sound': 'Sound'
   },
   {
     'codes': ['nl', 'nl-BE'],
@@ -51,6 +53,8 @@ const translations = [
     'theme': 'Weergave',
     'light': 'Licht',
     'system': 'Systeem',
-    'dark': 'Donker'
+    'dark': 'Donker',
+    'animations': 'Animaties',
+    'sound': 'Geluid'
   }
 ]

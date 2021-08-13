@@ -44,6 +44,7 @@ const boardFields = document.querySelectorAll('[data-el=board] output'),
       settingsEl = document.querySelector('[data-el=settings]'),
       languageSelect = document.body.querySelector('[data-el=language-select]'),
       themeSwitch = document.querySelector('[data-el=theme-switch]'),
+      animationsSwitch = document.querySelector('[data-el=animations-switch]'),
       highScoreEl = document.querySelector('[name=high-score]'),
       totalScoreEl = document.querySelector('[name=total-score]'),
       scores = {
@@ -66,8 +67,10 @@ for (let button of buttons) button.addEventListener('click', handleButtonClick)
 document.addEventListener('keydown', handleShortcuts)
 // Trigger the translate function on change of the language <select> element
 languageSelect.addEventListener('change', function(){translate(this.value)})
-// Tigger the switchTheme function on change of the theme switch radio buttons
+// Trigger the switchTheme function on change of the theme switch radio buttons
 themeSwitch.addEventListener('change', switchTheme)
+// Trigger the animation switch function on change of the toggle switch
+animationsSwitch.addEventListener('change', toggleAnimations)
 
 
 /* 3. Generic functions
@@ -463,3 +466,21 @@ if (currentTheme !== 'system') {
   document.forms['settings'][currentTheme].checked = true;
   switchTheme()
 }
+
+
+/* 18. Settings switches
+----------------------------------------------------------------------------- */
+function toggleAnimations(){
+  let animations = 'on'
+  if (!this.checked) animations = 'off'
+  localStorage.setItem('animations', animations)
+  document.documentElement.dataset.animations = animations
+}
+
+let currentAnimations = getStorageItem('animations', 'on')
+if (currentAnimations === 'off') {
+  document.forms['settings']['animations'].checked = false
+  document.documentElement.dataset.animations = 'off'
+}
+
+// TODO: create generic approach for settings form updates

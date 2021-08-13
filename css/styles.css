@@ -61,10 +61,11 @@
 
   /* --- 1.3 Theme Colors --------------------------------------------------- */
   :root{
-    --pri-bg-color:    var(--light, #f9f9f9) var(--dark, #143b4f);
-    --sec-bg-color:    var(--light, #f0f1f2) var(--dark, #17455c);
-    --accent-bg-color: var(--light, #c7ebe4) var(--dark, #264e56);
-    --input-bg-color:  var(--light, #ffffff) var(--dark, #13374a);
+    --pri-bg-color:           var(--light, #f9f9f9) var(--dark, #143b4f);
+    --sec-bg-color:           var(--light, #f0f1f2) var(--dark, #17455c);
+    --accent-bg-color:        var(--light, #c7ebe4) var(--dark, #264e56);
+    --input-bg-color:         var(--light, #ffffff) var(--dark, #13374a);
+    --input-active-bg-color:  var(--light, #a3ccc4) var(--dark, #6F9E91);
 
     --pri-txt-color:    var(--light, #5d6362) var(--dark, rgba(247,247,247,.95));
     --sec-txt-color:    var(--light, #868d8c) var(--dark, rgba(247,247,247,.80));
@@ -72,7 +73,7 @@
     --accent-txt-color: var(--light, #4d8075) var(--dark, rgba(247,247,247,.80));
 
     --border-default:  var(--light, #e3e5e6) var(--dark, #2d4b5c);
-    --border-subtle:   var(--light, #eeeeee) var(--dark, #325466);
+    --border-subtle:   var(--light, rgba(0,0,0,.05)) var(--dark, rgba(255,255,255,.1));
     --border-accent:   var(--light, #ceebe5) var(--dark, #304f46);
 
     --button-default:
@@ -140,13 +141,46 @@ html{
   border: 0 !important;
 }
 
-@media screen and (prefers-reduced-motion: reduce) {
-  *, * ::before, * ::after {
-    animation-duration: 0s !important;
-    animation-delay: 0s !important;
-    transition: none !important;
-    scroll-behavior: auto !important;
-  }
+.no-indent li{
+  list-style-type: none;
+}
+
+.hide-scrollbar{
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar{
+  display: none;
+}
+
+.overlay{
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+
+  -webkit-backdrop-filter: blur(2rem);
+  backdrop-filter: blur(2rem);
+}
+
+.overlay:not([hidden]){
+  animation: fadeIn .2s forwards;
+}
+
+noscript{
+  display: block;
+  padding: var(--page-padding-vertical) var(--page-padding-horizontal);
+}
+
+noscript p{
+  max-width: var(--board-width);
+  margin: 0 auto .5rem;
+  text-align: center;
 }
 
 
@@ -225,13 +259,15 @@ body{
       inset 0 -1px 2px 0 rgba(0,0,0,.05);
   }
 
-  .theme-light button:hover,
-  .theme-system button:hover{
-    filter: brightness(.98);
-  }
+  @media(hover: hover){
+    .theme-light button:hover,
+    .theme-system button:hover{
+      filter: brightness(.98);
+    }
 
-  .theme-dark button:hover{
-    filter: brightness(1.07);
+    .theme-dark button:hover{
+      filter: brightness(1.07);
+    }
   }
 
   button[readonly]{
@@ -255,8 +291,11 @@ body{
     box-shadow: none;
   }
 
-  button.ghost:hover{
-    background: var(--pri-bg-color);
+
+  @media(hover: hover){
+    button.ghost:hover{
+      background: var(--pri-bg-color);
+    }
   }
 
   button.ghost[aria-pressed="true"]{
@@ -483,22 +522,6 @@ body{
 
 /* 9. Settings
 ----------------------------------------------------------------------------- */
-.settings{
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  opacity: 0;
-  -webkit-backdrop-filter: blur(1.5rem);
-  backdrop-filter: blur(1.5rem);
-  overflow: auto;
-}
-
-.settings:not([hidden]){
-  animation: fadeIn .2s forwards;
-}
-
 .settings .layout{
   transform: scale(.95);
   max-width: var(--board-width);
@@ -517,6 +540,18 @@ body{
 .settings fieldset{
   border: none;
   margin-top: 2rem;
+}
+
+.settings ul{
+  margin-top: 2rem;
+}
+
+.settings li label{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 1rem 0;
+  /*border-bottom: 1px solid var(--border-subtle);*/
 }
 
 
@@ -557,10 +592,64 @@ body{
 
     box-shadow:
       0 1px 4px 0 rgba(0,0,0,0.08),
-      0 0 0 1px rgba(0,0,0,0.04);
+      0 0 0 1px var(--border-subtle);
   }
 
-  /* --- 10.4 Theme Switch -------------------------------------------------- */
+  /* --- 10.4 Toggle Switch ------------------------------------------------- */
+  .toggle-switch{
+    --toggle-bg-color:        var(--light, var(--sec-bg-color)) var(--dark, var(--sec-bg-color));
+    --handle-bg-color:        var(--light, var(--pri-bg-color)) var(--dark, var(--sec-txt-color));
+    --handle-active-bg-color: var(--light, var(--pri-bg-color)) var(--dark, var(--pri-txt-color));
+
+    position: relative; /* to absolutely position pseudo-elements */
+    width: 3.5rem;
+    height: 2rem;
+  }
+
+  .toggle-switch::before,
+  .toggle-switch::after{
+    content: '';
+    display: block;
+    position: absolute;
+    border-radius: 1rem;
+  }
+
+  .toggle-switch::before{
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--toggle-bg-color);
+    box-shadow:
+      inset 0 0 0 1px rgba(0,0,0,0.04),
+      inset 0 1px 4px 0 rgba(0,0,0,0.08);
+    transition:
+      background-color .12s cubic-bezier(0.48, 0.18, 0.14, 0.96),
+      border-color .12s cubic-bezier(0.48, 0.18, 0.14, 0.96);
+  }
+
+  .toggle-switch:checked::before{
+    background-color: var(--input-active-bg-color);
+    box-shadow:
+      inset 0 0 0 1px rgba(0,0,0,0.04),
+      inset 0 1px 4px 0 rgba(0,0,0,0.08);
+  }
+
+  .toggle-switch::after{
+    top: .0625rem;
+    left: .0625rem;
+    padding: .9375rem;
+    background-color: var(--handle-bg-color);
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+    transition: transform .16s cubic-bezier(0.48, 0.18, 0.14, 0.96);
+  }
+
+  .toggle-switch:checked::after{
+    transform: translateX(1.5rem);
+    background-color: var(--handle-active-bg-color);
+  }
+
+  /* --- 10.5 Theme Switch -------------------------------------------------- */
   .theme-switch{
     -webkit-appearance: none;
     appearance: none;
@@ -577,7 +666,7 @@ body{
     background: var(--input-bg-color);
     box-shadow:
       0 1px 4px 0 rgba(0,0,0,0.08),
-      0 0 0 1px rgba(0,0,0,0.04);
+      0 0 0 1px var(--border-subtle);
     border-radius: .5rem;
     padding: .1875rem;
     vertical-align: top;
@@ -617,4 +706,22 @@ body{
   0%  { transform: scale(1.0) }
   33% { transform: scale(1.2) }
   66% { transform: scale(0.9) }
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+  *, * ::before, * ::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+[data-animations=off] *,
+[data-animations=off] * ::before,
+[data-animations=off] * ::after {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
 }
